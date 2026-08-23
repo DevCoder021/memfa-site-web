@@ -1,23 +1,32 @@
-import { Poppins, Geist } from "next/font/google";
 import "./globals.css";
-import { cn } from "@/lib/utils";
+import { Metadata } from "next";
+import Cursor from "@/components/Cursor";
+import SmoothScroll from "@/components/SmoothScroll";
+import PageTransition from "@/components/PageTransition";
+import Navbar from "@/components/Navbar";
 
-const geist = Geist({subsets:['latin'],variable:'--font-sans'});
+export const metadata: Metadata = {
+  title: "MEMFA - Mission Évangélique Maranatha",
+  description: "Mission Évangélique Maranatha Foi et Action",
+  icons: {
+    icon: "/assets/logo.png",
+  },
+};
 
-const poppins = Poppins({ 
-  subsets: ["latin"], 
-  weight: ["400", "600", "700"],
-  variable: "--font-poppins" 
-});
-
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fr" className={cn("font-sans", geist.variable)}>
-      <body className={`${poppins.variable} font-sans`}>{children}</body>
+    <html lang="fr" suppressHydrationWarning>
+      <body className="antialiased overflow-x-hidden w-full" suppressHydrationWarning>
+        <SmoothScroll>
+          <PageTransition>
+            <div className="relative w-full overflow-x-hidden">
+              <Navbar />
+              <Cursor />
+              {children}
+            </div>
+          </PageTransition>
+        </SmoothScroll>
+      </body>
     </html>
   );
 }
