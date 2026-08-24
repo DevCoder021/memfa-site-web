@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const API_URL = "https://admin-memfa.site.je/public/";
+const API_URL = "http://admin-memfa.site.je/public/";
 
 const fallbackData: Record<string, unknown> = {
   getActualites: [],

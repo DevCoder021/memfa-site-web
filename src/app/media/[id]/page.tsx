@@ -120,7 +120,7 @@ export default function ArticleDetailPage() {
         {article.image_url && (
           <div className="w-full aspect-video bg-gray-100 rounded-[2rem] overflow-hidden mb-12">
             <img 
-              src={`https://admin-memfa.site.je/public/${article.image_url}`} 
+              src={`http://admin-memfa.site.je/public/${article.image_url}`} 
               alt={article.titre}
               className="w-full h-full object-cover"
             />
