@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const DEFAULT_API_URL = "https://admin-memfa.site.je/public/";
+const API_URL = "https://admin-memfa.site.je/public/";
 
 const fallbackData: Record<string, unknown> = {
   getActualites: [],
@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "Action invalide" }, { status: 400 });
   }
 
-  const backendUrl = new URL(process.env.MEMFA_API_URL || DEFAULT_API_URL);
+  const backendUrl = new URL(API_URL);
   backendUrl.search = request.nextUrl.search;
 
   try {
