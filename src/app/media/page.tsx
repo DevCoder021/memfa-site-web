@@ -303,7 +303,7 @@ function MediaContent() {
                       <div className="h-64 bg-gray-200 relative overflow-hidden">
                         {article.image_url ? (
                           <img 
-                            src={`http://localhost/memfa-api/public/${article.image_url}`} 
+                            src={`https://admin-memfa.site.je/public/${article.image_url}`} 
                             alt={article.titre} 
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                           />
@@ -345,7 +345,7 @@ function MediaContent() {
               <>
                 {filteredLivres.length > 0 ? (
                   filteredLivres.map((livre) => {
-                    const fileUrl = `http://localhost/memfa-api/public/${livre.file_path}`;
+                    const fileUrl = `https://admin-memfa.site.je/public/${livre.file_path}`;
                     const fileName = livre.titre ? `${livre.titre.replace(/[^a-z0-9]/gi, '_')}.pdf` : 'document.pdf';
                     
                     return (
@@ -356,7 +356,7 @@ function MediaContent() {
                         <div className="h-64 bg-gray-200 relative overflow-hidden flex items-center justify-center">
                           {livre.cover_image ? (
                             <img 
-                              src={`http://localhost/memfa-api/public/${livre.cover_image}`} 
+                              src={`https://admin-memfa.site.je/public/${livre.cover_image}`} 
                               alt={livre.titre}
                               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                             />
@@ -431,7 +431,7 @@ function MediaContent() {
               <>
                 {filteredAudios.length > 0 ? (
                   filteredAudios.map((audio) => {
-                    const fileUrl = `http://localhost/memfa-api/public/${audio.file_path}`;
+                    const fileUrl = `https://admin-memfa.site.je/public/${audio.file_path}`;
                     const fileName = audio.titre ? `${audio.titre.replace(/[^a-z0-9]/gi, '_')}.mp3` : 'audio.mp3';
                     
                     return (

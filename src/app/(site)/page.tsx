@@ -359,7 +359,7 @@ export default function Home() {
     };
 
     try {
-      const API_URL = 'http://localhost/memfa-api/admin/save_message.php';
+      const API_URL = 'https://admin-memfa.site.je/admin/save_message.php';
 
       const res = await fetch(API_URL, {
         method: 'POST',
@@ -762,7 +762,7 @@ export default function Home() {
                       <div className="aspect-[16/10] bg-gray-100 rounded-[32px] mb-6 overflow-hidden border border-gray-50 relative">
                         {actu.image_url ? (
                           <img
-                            src={`http://localhost/memfa-api/public/${actu.image_url}`}
+                            src={`https://admin-memfa.site.je/public/${actu.image_url}`}
                             alt={actu.titre}
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                           />
