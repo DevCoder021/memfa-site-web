@@ -2,7 +2,6 @@
 "use client";
 
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
-import { Button } from "@/components/ui/button";
 import gsap from "gsap";
 import {
   PlayCircle,
@@ -19,10 +18,45 @@ import {
   Clock
 } from "lucide-react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
 import { getActualites, getLivres, getAudios, getLiveStatus } from "@/lib/api";
 
-const formatDate = (dateString: string) => {
+interface Article {
+  id: string | number;
+  titre: string;
+  contenu?: string;
+  image_url?: string;
+  date_evenement?: string;
+  date_publication?: string;
+}
+
+interface Livre {
+  id: string | number;
+  titre: string;
+  description?: string;
+  auteur?: string;
+  file_path?: string;
+  cover_image?: string;
+  created_at?: string;
+}
+
+interface Audio {
+  id: string | number;
+  titre: string;
+  description?: string;
+  speaker?: string;
+  file_path?: string;
+  duration?: string;
+  created_at?: string;
+}
+
+interface LiveStatus {
+  is_active: boolean;
+  video_url?: string;
+  titre?: string;
+  scheduled_for?: string;
+}
+
+const formatDate = (dateString?: string) => {
   if (!dateString) return "";
   const date = new Date(dateString);
   if (isNaN(date.getTime())) return "Date non disponible";
@@ -80,15 +114,14 @@ const handleDownload = async (fileUrl: string, fileName: string) => {
 function MediaContent() {
   const [activeCategory, setActiveCategory] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
-  const [articles, setArticles] = useState<any[]>([]);
-  const [livres, setLivres] = useState<any[]>([]);
-  const [audios, setAudios] = useState<any[]>([]);
-  const [live, setLive] = useState<any>(null);
+  const [articles, setArticles] = useState<Article[]>([]);
+  const [livres, setLivres] = useState<Livre[]>([]);
+  const [audios, setAudios] = useState<Audio[]>([]);
+  const [live, setLive] = useState<LiveStatus | null>(null);
   const [loading, setLoading] = useState(true);
   
   const headerRef = useRef<HTMLDivElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
-  const searchParams = useSearchParams();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -303,7 +336,7 @@ function MediaContent() {
                       <div className="h-64 bg-gray-200 relative overflow-hidden">
                         {article.image_url ? (
                           <img 
-                            src={`http://admin-memfa.site.je/public/${article.image_url}`} 
+                            src={`https://admin-memfa.site.je/public/${article.image_url}`} 
                             alt={article.titre} 
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                           />
@@ -345,7 +378,7 @@ function MediaContent() {
               <>
                 {filteredLivres.length > 0 ? (
                   filteredLivres.map((livre) => {
-                    const fileUrl = `http://admin-memfa.site.je/public/${livre.file_path}`;
+                    const fileUrl = `https://admin-memfa.site.je/public/${livre.file_path}`;
                     const fileName = livre.titre ? `${livre.titre.replace(/[^a-z0-9]/gi, '_')}.pdf` : 'document.pdf';
                     
                     return (
@@ -356,7 +389,7 @@ function MediaContent() {
                         <div className="h-64 bg-gray-200 relative overflow-hidden flex items-center justify-center">
                           {livre.cover_image ? (
                             <img 
-                              src={`http://admin-memfa.site.je/public/${livre.cover_image}`} 
+                              src={`https://admin-memfa.site.je/public/${livre.cover_image}`} 
                               alt={livre.titre}
                               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                             />
@@ -431,7 +464,7 @@ function MediaContent() {
               <>
                 {filteredAudios.length > 0 ? (
                   filteredAudios.map((audio) => {
-                    const fileUrl = `http://admin-memfa.site.je/public/${audio.file_path}`;
+                    const fileUrl = `https://admin-memfa.site.je/public/${audio.file_path}`;
                     const fileName = audio.titre ? `${audio.titre.replace(/[^a-z0-9]/gi, '_')}.mp3` : 'audio.mp3';
                     
                     return (
