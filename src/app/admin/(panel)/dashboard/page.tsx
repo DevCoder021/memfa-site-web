@@ -10,6 +10,13 @@ import {
 
 const JOURS = ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"];
 
+type DashboardActualite = {
+  id: string;
+  titre: string;
+  datePublication: Date;
+  isPublished: boolean;
+};
+
 export default async function DashboardPage() {
   const session = await getServerSession(authOptions);
 
@@ -220,7 +227,7 @@ export default async function DashboardPage() {
             <p className="text-slate-400 text-sm py-6 text-center">Aucune actualité pour le moment.</p>
           ) : (
             <div className="divide-y divide-slate-50">
-              {dernieresActualites.map((a) => (
+              {(dernieresActualites as DashboardActualite[]).map((a) => (
                 <div key={a.id} className="py-3 flex items-center justify-between gap-3">
                   <div className="min-w-0">
                     <p className="text-sm font-medium text-[var(--color-memfa-charcoal)] truncate">{a.titre}</p>
