@@ -7,7 +7,10 @@ async function main() {
 
   const admin = await prisma.admin.upsert({
     where: { username: "admin" },
-    update: {},
+    update: {
+      email: "admin@memfa.org",
+      password: hashed,
+    },
     create: {
       username: "admin",
       email: "admin@memfa.org",
