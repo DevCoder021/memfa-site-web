@@ -82,12 +82,12 @@ export default function GivePage() {
   const isFormValid = amount && parseInt(amount) > 0 && selectedMethod;
 
   return (
-    <div className="min-h-screen bg-[#F5F5F7] text-[#1a0f2b] selection:bg-[#d97706]/30">
+    <div className="min-h-screen bg-[var(--color-memfa-violet-soft)] text-[var(--color-memfa-charcoal)] selection:bg-[var(--color-memfa-or-soft)]">
       
       {/* Fond subtil */}
       <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] bg-purple-200/20 rounded-full blur-[120px]" />
-        <div className="absolute bottom-[-20%] right-[-10%] w-[600px] h-[600px] bg-[#d97706]/10 rounded-full blur-[120px]" />
+        <div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] bg-[var(--color-memfa-violet)]/10 rounded-full blur-[120px]" />
+        <div className="absolute bottom-[-20%] right-[-10%] w-[600px] h-[600px] bg-[var(--color-memfa-or)]/10 rounded-full blur-[120px]" />
       </div>
 
       <main ref={containerRef} className="relative z-10 pt-24 pb-32 px-4 sm:px-6">
@@ -114,7 +114,7 @@ export default function GivePage() {
               <div className="bg-white rounded-[2.5rem] shadow-[0_20px_40px_-10px_rgba(26,15,43,0.08)] border border-white/50 p-8 apple-card relative overflow-hidden">
                 
                 <div className="mb-8 fade-in-up">
-                  <h1 className="text-3xl font-bold tracking-tight text-[#1a0f2b] mb-1">Votre Don</h1>
+                  <h1 className="text-3xl font-semibold tracking-tight text-[var(--color-memfa-violet-deep)] mb-1">Votre Don</h1>
                   <p className="text-gray-500 text-sm">Soutenez l&apos;œuvre de la mission.</p>
                 </div>
 
@@ -129,7 +129,7 @@ export default function GivePage() {
                       className="w-full text-6xl font-semibold text-[#1a0f2b] bg-transparent outline-none placeholder:text-gray-300 tracking-tight"
                     />
                     <div className="absolute right-6 bottom-6 flex flex-col items-end">
-                      <span className="text-lg font-bold text-[#d97706]">FCFA</span>
+                      <span className="text-lg font-semibold text-[var(--color-memfa-or)]">FCFA</span>
                     </div>
                   </div>
                 </div>

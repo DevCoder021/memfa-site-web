@@ -1,0 +1,117 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+}
+
+model Admin {
+  id        String   @id @default(cuid())
+  username  String   @unique
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+}
+
+model Actualite {
+  id              String    @id @default(cuid())
+  titre           String
+  slug            String    @unique
+  contenu         String
+  imageUrl        String?
+  datePublication DateTime  @default(now())
+  dateEvenement   DateTime?
+  isPublished     Boolean   @default(true)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@index([isPublished, datePublication])
+}
+
+model Live {
+  id           String    @id @default(cuid())
+  titre        String
+  videoUrl     String
+  isActive     Boolean   @default(false)
+  scheduledFor DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+model Audio {
+  id          String   @id @default(cuid())
+  titre       String
+  speaker     String?
+  description String?
+  filePath    String
+  coverImage  String?
+  duration    String?
+  createdAt   DateTime @default(now())
+}
+
+model Livre {
+  id            String   @id @default(cuid())
+  titre         String
+  auteur        String?
+  description   String?
+  filePath      String
+  coverImage    String?
+  downloadCount Int      @default(0)
+  createdAt     DateTime @default(now())
+}
+
+model Message {
+  id          String    @id @default(cuid())
+  nom         String
+  email       String
+  telephone   String?
+  message     String
+  reponse     String?
+  reponduLe   DateTime?
+  reponduPar  String?
+  isRead      Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+}
+
+model Donation {
+  id            String         @id @default(cuid())
+  donorName     String?
+  amount        Decimal        @db.Decimal(10, 2)
+  paymentMethod String?
+  transactionId String?
+  status        DonationStatus @default(PENDING)
+  message       String?
+  createdAt     DateTime       @default(now())
+}
+
+enum DonationStatus {
+  PENDING
+  COMPLETED
+  FAILED
+}
+
+model Notification {
+  id        String           @id @default(cuid())
+  userId    String?
+  title     String
+  message   String
+  type      NotificationType @default(INFO)
+  isRead    Boolean          @default(false)
+  link      String?
+  createdAt DateTime         @default(now())
+}
+
+enum NotificationType {
+  INFO
+  SUCCESS
+  WARNING
+  ERROR
+}
+
+model Quote {
+  id        String   @id @default(cuid())
+  text      String
+  reference String
+  createdAt DateTime @default(now())
+}

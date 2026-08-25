@@ -1,31 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800&display=swap');
 @import "tailwindcss";
 
 @theme {
-  /* =============================================
-     PALETTE MEMFA — Couleurs de l'Église
-     =============================================
-     Royal Magenta   #7209B7  → violet principal
-     Warm Amber      #FFB703  → or / accent
-     Deep Charcoal   #1C1C1C  → texte sombre
-     Soft Orchid     #B388EB  → lilas / arrière-plan doux
-     Golden Peach    #F4A261  → pêche / rose chaud
-  ============================================= */
-
-  --color-memfa-violet:      #7209B7;
-  --color-memfa-violet-deep: #520a86;   /* version foncée pour hover/gradients */
-  --color-memfa-or:          #FFB703;
-  --color-memfa-charcoal:    #1C1C1C;
-  --color-memfa-lilac:       #B388EB;
-  --color-memfa-rose:        #F4A261;
+    /* Palette MEMFA — blanc, violet et or */
+    --color-memfa-white:       #FFFFFF;
+    --color-memfa-violet:      #6B2FA0;
+    --color-memfa-violet-deep: #3A1361;
+    --color-memfa-violet-soft: #F1E9F8;
+    --color-memfa-violet-line: #DFCBEF;
+    --color-memfa-or:          #C9971F;
+    --color-memfa-or-bright:   #F0C419;
+    --color-memfa-or-soft:     #FBF1D6;
+    --color-memfa-charcoal:    #1D1526;
+    --color-memfa-lilac:       #F1E9F8;
+    --color-memfa-rose:        #B84545;
+    --font-display: 'Fraunces', serif;
+    --font-body: 'Inter', sans-serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+    --font-serif: 'Fraunces', serif;
+    --font-sans: 'Inter', sans-serif;
 
   /* Compatibilité avec les anciennes variables Tailwind personnalisées */
-  --color-purple-950: #520a86;
-  --color-gold-600:   #FFB703;
+  --color-purple-950: #3A1361;
+  --color-gold-600:   #C9971F;
 }
 
 :root {
-  --background: #fdfaff;   /* blanc légèrement violacé — très subtil */
-  --foreground: #1C1C1C;
+  --background: #FFFEFC;
+  --foreground: #1D1526;
+  --memfa-ink-60: #5B4F68;
+  --memfa-paper: #FFFEFC;
 }
 
 @layer base {
@@ -34,13 +38,27 @@
     width: 100%;
     position: relative;
   }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    color: var(--color-memfa-violet-deep);
+    text-wrap: balance;
+  }
+
+  p, li, label, input, button, textarea, select {
+    font-family: var(--font-body);
+  }
+
+  code, pre, .font-mono {
+    font-family: var(--font-mono);
+  }
 }
 
 body {
   @apply antialiased font-sans overflow-x-hidden;
   background: var(--background);
   color: var(--foreground);
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", sans-serif;
+  font-family: var(--font-body);
   width: 100%;
 }
 
@@ -73,47 +91,59 @@ html.lenis, html.lenis body {
    ====================================================== */
 
 /* Backgrounds */
-.bg-memfa-violet   { background-color: #7209B7; }
-.bg-memfa-or       { background-color: #FFB703; }
-.bg-memfa-charcoal { background-color: #1C1C1C; }
-.bg-memfa-lilac    { background-color: #B388EB; }
-.bg-memfa-rose     { background-color: #F4A261; }
+.bg-memfa-violet   { background-color: #6B2FA0; }
+.bg-memfa-or       { background-color: #C9971F; }
+.bg-memfa-charcoal { background-color: #1D1526; }
+.bg-memfa-lilac    { background-color: #F1E9F8; }
+.bg-memfa-rose     { background-color: #B84545; }
 
 /* Backgrounds avec opacité */
-.bg-memfa-violet\/10  { background-color: rgb(114 9 183 / 0.10); }
-.bg-memfa-violet\/20  { background-color: rgb(114 9 183 / 0.20); }
-.bg-memfa-or\/10      { background-color: rgb(255 183 3 / 0.10); }
-.bg-memfa-or\/20      { background-color: rgb(255 183 3 / 0.20); }
-.bg-memfa-lilac\/10   { background-color: rgb(179 136 235 / 0.10); }
-.bg-memfa-lilac\/20   { background-color: rgb(179 136 235 / 0.20); }
-.bg-memfa-rose\/30    { background-color: rgb(244 162 97 / 0.15); }
+.bg-memfa-violet\/10  { background-color: rgb(107 47 160 / 0.10); }
+.bg-memfa-violet\/20  { background-color: rgb(107 47 160 / 0.20); }
+.bg-memfa-or\/10      { background-color: rgb(201 151 31 / 0.10); }
+.bg-memfa-or\/20      { background-color: rgb(201 151 31 / 0.20); }
+.bg-memfa-lilac\/10   { background-color: rgb(241 233 248 / 0.10); }
+.bg-memfa-lilac\/20   { background-color: rgb(241 233 248 / 0.20); }
+.bg-memfa-rose\/30    { background-color: rgb(184 69 69 / 0.15); }
 
 /* Textes */
-.text-memfa-violet   { color: #7209B7; }
-.text-memfa-or       { color: #FFB703; }
-.text-memfa-charcoal { color: #1C1C1C; }
-.text-memfa-lilac    { color: #B388EB; }
-.text-memfa-rose     { color: #F4A261; }
+.text-memfa-violet   { color: #6B2FA0; }
+.text-memfa-or       { color: #C9971F; }
+.text-memfa-charcoal { color: #1D1526; }
+.text-memfa-lilac    { color: #F1E9F8; }
+.text-memfa-rose     { color: #B84545; }
 
 /* Textes avec opacité */
-.text-memfa-violet\/40 { color: rgb(114 9 183 / 0.40); }
+.text-memfa-violet\/40 { color: rgb(107 47 160 / 0.40); }
 
 /* Bordures */
-.border-memfa-violet   { border-color: #7209B7; }
-.border-memfa-or       { border-color: #FFB703; }
-.border-memfa-lilac    { border-color: #B388EB; }
+.border-memfa-violet   { border-color: #6B2FA0; }
+.border-memfa-or       { border-color: #C9971F; }
+.border-memfa-lilac    { border-color: #F1E9F8; }
 
 /* Bordures avec opacité */
-.border-memfa-or\/20   { border-color: rgb(255 183 3 / 0.20); }
-.border-memfa-violet\/10 { border-color: rgb(114 9 183 / 0.10); }
+.border-memfa-or\/20   { border-color: rgb(201 151 31 / 0.20); }
+.border-memfa-violet\/10 { border-color: rgb(107 47 160 / 0.10); }
 
 /* Shadows avec opacité */
-.shadow-memfa-violet\/10  { --tw-shadow-color: rgb(114 9 183 / 0.10); }
-.shadow-memfa-violet\/30  { --tw-shadow-color: rgb(114 9 183 / 0.30); }
+.shadow-memfa-violet\/10  { --tw-shadow-color: rgb(107 47 160 / 0.10); }
+.shadow-memfa-violet\/30  { --tw-shadow-color: rgb(107 47 160 / 0.30); }
 
 /* Gradient hero du bouton */
-.from-memfa-violet { --tw-gradient-from: #7209B7; }
-.to-memfa-violet-deep { --tw-gradient-to: #520a86; }
+.from-memfa-violet { --tw-gradient-from: #6B2FA0; }
+.to-memfa-violet-deep { --tw-gradient-to: #3A1361; }
 
 /* Hover text */
-.hover\:text-memfa-or:hover { color: #FFB703; }
+.hover\:text-memfa-or:hover { color: #C9971F; }
+
+/* Compatibilité visuelle pour les anciennes classes neutres */
+.text-black { color: #1D1526; }
+.text-gray-900, .text-gray-700, .text-gray-600 { color: #1D1526; }
+.text-gray-500, .text-gray-400 { color: #5B4F68; }
+.text-gray-300, .text-gray-200 { color: #9B8AA8; }
+.bg-gray-50, .bg-gray-100 { background-color: #F1E9F8; }
+.bg-gray-200 { background-color: #E7D9F0; }
+.border-gray-50, .border-gray-100 { border-color: #DFCBEF; }
+.border-gray-200 { border-color: #D2B9E5; }
+.bg-black { background-color: #3A1361; }
+.hover\:bg-black:hover { background-color: #1D1526; }

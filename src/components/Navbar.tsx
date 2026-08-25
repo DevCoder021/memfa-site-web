@@ -44,15 +44,15 @@ const Navbar = () => {
     <nav
       className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ease-in-out ${
         scrolled
-          ? "bg-black/95 backdrop-blur-md py-4 border-b border-white/10"
-          : "bg-transparent py-8"
+          ? "bg-[var(--color-memfa-violet-deep)]/95 backdrop-blur-md py-4 border-b border-white/10"
+          : "bg-[var(--background)]/90 backdrop-blur-md py-6 border-b border-[var(--color-memfa-violet-line)]"
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 md:px-12 flex justify-between items-center">
         {/* Logo */}
         <Link href="/" className="relative z-[60] flex items-center gap-3">
           <img src="/assets/logo.png" alt="MEMFA Logo" className="w-10 h-10 object-contain" />
-          <span className={`font-serif font-bold text-xl tracking-tight transition-colors duration-500 ${scrolled || isOpen ? "text-white" : "text-[#1a0f2b]"}`}>
+          <span className={`font-serif font-semibold text-xl tracking-tight transition-colors duration-500 ${scrolled || isOpen ? "text-white" : "text-[var(--color-memfa-violet-deep)]"}`}>
             MEMFA
           </span>
         </Link>
@@ -64,7 +64,7 @@ const Navbar = () => {
               key={link.name}
               href={link.href}
               className={`relative group text-xs font-bold uppercase tracking-[0.2em] transition-colors duration-500 ${
-                scrolled ? "text-white/80 hover:text-white" : "text-[#1a0f2b]/80 hover:text-[#1a0f2b]"
+                scrolled ? "text-white/80 hover:text-white" : "text-[var(--memfa-ink-60)] hover:text-[var(--color-memfa-violet)]"
               }`}
             >
               {link.name}
@@ -73,13 +73,13 @@ const Navbar = () => {
                 whileHover={{ scaleX: 1 }}
                 transition={{ duration: 0.3 }}
                 style={{ originX: 0 }}
-                className={`absolute -bottom-1 left-0 w-full h-[2px] ${scrolled ? "bg-[#C9A84C]" : "bg-[#1a0f2b]"}`}
+                className={`absolute -bottom-1 left-0 w-full h-[2px] ${scrolled ? "bg-[var(--color-memfa-or-bright)]" : "bg-[var(--color-memfa-or)]"}`}
               />
             </Link>
           ))}
           <Link
             href="/don"
-            className="bg-[#1a0f2b] text-white px-8 py-3 rounded-full font-bold text-[10px] uppercase tracking-[0.2em] hover:bg-[#C9A84C] transition-all duration-500 shadow-xl"
+            className="bg-[var(--color-memfa-violet)] text-white px-8 py-3 rounded-lg font-semibold text-[10px] uppercase tracking-[0.14em] hover:bg-[var(--color-memfa-violet-deep)] transition-all duration-300 shadow-lg shadow-[var(--color-memfa-violet)]/20"
           >
             Don en ligne
           </Link>
@@ -122,7 +122,7 @@ const Navbar = () => {
                   animate={{ clipPath: "circle(150% at 95% 5%)" }}
                   exit={{ clipPath: "circle(0% at 95% 5%)" }}
                   transition={{ duration: 0.6, ease: [0.77, 0, 0.175, 1] }}
-                  className="fixed inset-0 bg-[#0D0B08] z-[9999] flex flex-col items-center justify-center p-6"
+                  className="fixed inset-0 bg-[var(--color-memfa-violet-deep)] z-[9999] flex flex-col items-center justify-center p-6"
                 >
                   {/* Close button (croix) */}
                   <button
@@ -149,7 +149,7 @@ const Navbar = () => {
                         <Link
                           href={link.href}
                           onClick={() => setIsOpen(false)}
-                          className="font-serif text-4xl italic font-bold text-white hover:text-[#C9A84C] transition-colors duration-300 uppercase tracking-tight"
+                          className="font-serif text-4xl italic font-semibold text-white hover:text-[var(--color-memfa-or-bright)] transition-colors duration-300 tracking-tight"
                         >
                           {link.name}
                         </Link>
@@ -169,7 +169,7 @@ const Navbar = () => {
                       <Link
                         href="/don"
                         onClick={() => setIsOpen(false)}
-                        className="bg-[#C9A84C] text-black px-10 py-4 rounded-full font-black text-xs uppercase tracking-[0.2em] shadow-2xl"
+                        className="bg-[var(--color-memfa-or-bright)] text-[var(--color-memfa-charcoal)] px-10 py-4 rounded-lg font-semibold text-xs uppercase tracking-[0.14em] shadow-2xl"
                       >
                         Don en ligne
                       </Link>
