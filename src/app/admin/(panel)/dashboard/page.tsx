@@ -17,6 +17,13 @@ type DashboardActualite = {
   isPublished: boolean;
 };
 
+type DashboardMessage = {
+  id: string;
+  nom: string;
+  message: string;
+  isRead: boolean;
+};
+
 export default async function DashboardPage() {
   const session = await getServerSession(authOptions);
 
@@ -259,7 +266,7 @@ export default async function DashboardPage() {
             <p className="text-slate-400 text-sm py-6 text-center">Aucun message pour le moment.</p>
           ) : (
             <div className="divide-y divide-slate-50">
-              {derniersMessages.map((m) => (
+              {(derniersMessages as DashboardMessage[]).map((m) => (
                 <div key={m.id} className="py-3 flex items-center gap-3">
                   <div className="w-9 h-9 rounded-full bg-[var(--color-memfa-violet)]/10 text-[var(--color-memfa-violet)] flex items-center justify-center text-xs font-semibold shrink-0">
                     {m.nom.slice(0, 2).toUpperCase()}
