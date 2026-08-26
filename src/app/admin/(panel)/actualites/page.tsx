@@ -195,6 +195,7 @@ function ActualiteModal({
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const editorRef = useRef<HTMLDivElement>(null);
+  const selectionRef = useRef<Range | null>(null);
 
   const handleImageChange = async (file: File | null) => {
     if (!file) return;
@@ -208,9 +209,44 @@ function ActualiteModal({
     else alert(data.error ?? "Erreur lors de l'upload");
   };
 
+  const saveSelection = () => {
+    const selection = window.getSelection();
+    if (!selection?.rangeCount || !editorRef.current?.contains(selection.anchorNode)) return;
+    selectionRef.current = selection.getRangeAt(0).cloneRange();
+  };
+
+  const restoreSelection = () => {
+    const selection = window.getSelection();
+    if (!selectionRef.current || !selection) return;
+    selection.removeAllRanges();
+    selection.addRange(selectionRef.current);
+  };
+
   const format = (command: string, value?: string) => {
+    editorRef.current?.focus();
+    restoreSelection();
     document.execCommand(command, false, value);
     editorRef.current?.focus();
+    saveSelection();
+  };
+
+  const applyInlineStyle = (property: string, value: string) => {
+    editorRef.current?.focus();
+    restoreSelection();
+    const selection = window.getSelection();
+    if (!selection?.rangeCount || selection.isCollapsed || !editorRef.current?.contains(selection.anchorNode)) return;
+
+    const range = selection.getRangeAt(0);
+    const span = document.createElement("span");
+    span.style.setProperty(property, value);
+    span.appendChild(range.extractContents());
+    range.insertNode(span);
+    selection.removeAllRanges();
+    const newRange = document.createRange();
+    newRange.selectNodeContents(span);
+    selection.addRange(newRange);
+    selectionRef.current = newRange.cloneRange();
+    editorRef.current.focus();
   };
 
   const insertLink = () => {
@@ -321,6 +357,31 @@ function ActualiteModal({
                   <option value="h2">Titre 2</option>
                   <option value="h3">Titre 3</option>
                 </select>
+                <select
+                  defaultValue="Arial"
+                  onChange={(e) => applyInlineStyle("font-family", e.target.value)}
+                  className="h-7 rounded border border-slate-200 bg-white px-2 text-xs text-slate-600 outline-none"
+                  aria-label="Police"
+                >
+                  <option value="Arial">Arial</option>
+                  <option value="Georgia">Georgia</option>
+                  <option value="Verdana">Verdana</option>
+                  <option value="Trebuchet MS">Trebuchet</option>
+                  <option value="Courier New">Courier</option>
+                </select>
+                <select
+                  defaultValue="16px"
+                  onChange={(e) => applyInlineStyle("font-size", e.target.value)}
+                  className="h-7 w-16 rounded border border-slate-200 bg-white px-2 text-xs text-slate-600 outline-none"
+                  aria-label="Taille du texte"
+                >
+                  <option value="12px">12</option>
+                  <option value="14px">14</option>
+                  <option value="16px">16</option>
+                  <option value="18px">18</option>
+                  <option value="24px">24</option>
+                  <option value="32px">32</option>
+                </select>
                 <span className="w-px h-4 bg-slate-200 mx-1" />
                 <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => format("bold")} className="p-1.5 rounded hover:bg-white" title="Gras">
                   <Bold className="w-3.5 h-3.5 text-slate-500" />
@@ -357,6 +418,47 @@ function ActualiteModal({
                 <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => format("removeFormat")} className="p-1.5 rounded hover:bg-white" title="Effacer le formatage">
                   <Eraser className="w-3.5 h-3.5 text-slate-500" />
                 </button>
+                <label className="flex h-7 items-center gap-1 rounded border border-slate-200 bg-white px-1.5" title="Couleur du texte">
+                  <span className="text-[10px] text-slate-500">A</span>
+                  <input
+                    type="color"
+                    defaultValue="#1f2937"
+                    onChange={(e) => applyInlineStyle("color", e.target.value)}
+                    className="h-5 w-5 cursor-pointer border-0 bg-transparent p-0"
+                    aria-label="Couleur du texte"
+                  />
+                </label>
+                <label className="flex h-7 items-center gap-1 rounded border border-slate-200 bg-white px-1.5" title="Couleur du soulignage">
+                  <UnderlineIcon className="h-3.5 w-3.5 text-slate-500" />
+                  <input
+                    type="color"
+                    defaultValue="#1f2937"
+                    onChange={(e) => applyInlineStyle("text-decoration-color", e.target.value)}
+                    className="h-5 w-5 cursor-pointer border-0 bg-transparent p-0"
+                    aria-label="Couleur du soulignage"
+                  />
+                </label>
+                <select
+                  defaultValue="none"
+                  onChange={(e) => applyInlineStyle("text-transform", e.target.value)}
+                  className="h-7 rounded border border-slate-200 bg-white px-2 text-xs text-slate-600 outline-none"
+                  aria-label="Casse du texte"
+                >
+                  <option value="none">Casse</option>
+                  <option value="uppercase">MAJUSCULES</option>
+                  <option value="lowercase">minuscules</option>
+                  <option value="capitalize">Première lettre</option>
+                </select>
+                <select
+                  defaultValue="none"
+                  onChange={(e) => applyInlineStyle("text-shadow", e.target.value)}
+                  className="h-7 rounded border border-slate-200 bg-white px-2 text-xs text-slate-600 outline-none"
+                  aria-label="Effet du texte"
+                >
+                  <option value="none">Effet</option>
+                  <option value="1px 1px 2px rgba(0,0,0,.25)">Ombre</option>
+                  <option value="0 0 6px rgba(124,58,237,.45)">Lueur</option>
+                </select>
                 </div>
               </div>
               <div
@@ -364,6 +466,9 @@ function ActualiteModal({
                 contentEditable
                 suppressContentEditableWarning
                 dangerouslySetInnerHTML={{ __html: actualite?.contenu ?? "" }}
+                onMouseUp={saveSelection}
+                onKeyUp={saveSelection}
+                onBlur={saveSelection}
                 className="min-h-35 px-4 py-3 outline-none text-sm text-memfa-charcoal italic-placeholder"
                 data-placeholder="Rédigez votre message inspirant ici..."
               />
