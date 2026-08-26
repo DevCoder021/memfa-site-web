@@ -24,6 +24,7 @@ const navItems = [
 export default function AdminPanelLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const mainRef = useRef<HTMLElement>(null);
+  const sidebarRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const lenis = new Lenis({
@@ -35,25 +36,49 @@ export default function AdminPanelLayout({ children }: { children: React.ReactNo
     gsap.ticker.add(tick);
     gsap.ticker.lagSmoothing(0);
 
+    const timeline = gsap.timeline({ defaults: { ease: "power2.out" } });
+    timeline.fromTo(
+      sidebarRef.current,
+      { opacity: 0, x: -24 },
+      { opacity: 1, x: 0, duration: 1.05 }
+    );
+    const navLinks = sidebarRef.current?.querySelectorAll("nav a");
+    if (navLinks?.length) {
+      timeline.fromTo(
+        navLinks,
+        { opacity: 0, x: -10 },
+        { opacity: 1, x: 0, duration: 0.65, stagger: 0.09 },
+        "-=0.72"
+      );
+    }
+    timeline.fromTo(
+      mainRef.current,
+      { opacity: 0, x: 18 },
+      { opacity: 1, x: 0, duration: 0.95 },
+      "-=0.55"
+    );
+
     const dashboard = mainRef.current?.querySelector("[data-admin-dashboard]");
     const revealItems = dashboard?.querySelectorAll("[data-dashboard-reveal]");
     if (dashboard && revealItems?.length) {
-      gsap.fromTo(
+      timeline.fromTo(
         revealItems,
         { opacity: 0, y: 18, scale: 0.985 },
         {
           opacity: 1,
           y: 0,
           scale: 1,
-          duration: 0.7,
-          stagger: 0.08,
-          ease: "power3.out",
+          duration: 1.05,
+          stagger: 0.16,
+          ease: "power2.out",
           clearProps: "transform,opacity",
-        }
+        },
+        "-=0.38"
       );
     }
 
     return () => {
+      timeline.kill();
       gsap.ticker.remove(tick);
       lenis.destroy();
     };
@@ -62,7 +87,7 @@ export default function AdminPanelLayout({ children }: { children: React.ReactNo
   return (
     <div className="min-h-screen bg-[var(--color-memfa-violet-soft)]">
       {/* Sidebar fixe : reste à l'écran même quand le contenu principal scrolle */}
-      <aside className="w-72 hidden md:flex flex-col fixed left-4 top-4 bottom-4 rounded-2xl bg-[var(--background)] border border-[var(--color-memfa-violet-line)] shadow-[0_8px_30px_rgba(58,19,97,0.08)] z-20">
+      <aside ref={sidebarRef} className="w-72 hidden md:flex flex-col fixed left-4 top-4 bottom-4 rounded-2xl bg-[var(--background)] border border-[var(--color-memfa-violet-line)] shadow-[0_8px_30px_rgba(58,19,97,0.08)] z-20">
         <div className="h-24 flex items-center px-6 border-b border-[var(--color-memfa-violet-line)]">
           <Image src="/assets/logo.png" alt="MEMFA" width={40} height={40} className="mr-3" />
           <div>
