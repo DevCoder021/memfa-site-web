@@ -5,11 +5,11 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
 import {
-  Home, Newspaper, Book, Mic, Video, MessageSquare, HandHeart, Settings, LogOut,
+  LayoutDashboard, Newspaper, Book, Mic, Video, MessageSquare, HandHeart, Settings, LogOut,
 } from "lucide-react";
 
 const navItems = [
-  { href: "/admin/dashboard", label: "Tableau de bord", icon: Home },
+  { href: "/admin/dashboard", label: "Tableau de bord", icon: LayoutDashboard },
   { href: "/admin/actualites", label: "Actualités", icon: Newspaper },
   { href: "/admin/livres", label: "Bibliothèque", icon: Book },
   { href: "/admin/audios", label: "Audios", icon: Mic },
