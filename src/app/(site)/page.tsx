@@ -514,11 +514,11 @@ export default function Home() {
             <span className="text-sm font-semibold text-[#d97706] not-italic mt-4 block">Philippiens 2:15</span>
           </p>
           <div ref={heroBtnsRef} className="flex flex-col sm:flex-row gap-5 items-center justify-center pb-4 sm:pb-0">
-            <Button className="btn-magnetic bg-black text-white font-semibold h-14 px-10 rounded-full text-lg shadow-lg">
-              Découvrir
+            <Button asChild className="btn-magnetic bg-black text-white font-semibold h-14 px-10 rounded-full text-lg shadow-lg">
+              <Link href="#a-propos">Découvrir</Link>
             </Button>
-            <Button className="btn-magnetic bg-white text-black border border-black font-semibold h-14 px-10 rounded-full text-lg shadow-lg">
-              Contactez-nous
+            <Button asChild className="btn-magnetic bg-white text-black border border-black font-semibold h-14 px-10 rounded-full text-lg shadow-lg">
+              <Link href="#contact">Contactez-nous</Link>
             </Button>
           </div>
         </motion.div>
