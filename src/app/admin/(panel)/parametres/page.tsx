@@ -1,14 +1,19 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useSession } from "next-auth/react";
+import type { Session } from "next-auth";
 import { User, Mail, Lock, Save, KeyRound, CheckCircle2 } from "lucide-react";
 
 export default function ParametresPage() {
   const { data: session } = useSession();
 
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
+  return <ParametresForm key={session?.user?.id ?? "pending"} session={session} />;
+}
+
+function ParametresForm({ session }: { session: Session | null }) {
+  const [username, setUsername] = useState(session?.user?.name ?? "");
+  const [email, setEmail] = useState(session?.user?.email ?? "");
   const [savingProfile, setSavingProfile] = useState(false);
   const [profileMsg, setProfileMsg] = useState<{ type: "success" | "error"; text: string } | null>(null);
 
@@ -17,11 +22,6 @@ export default function ParametresPage() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [savingPassword, setSavingPassword] = useState(false);
   const [passwordMsg, setPasswordMsg] = useState<{ type: "success" | "error"; text: string } | null>(null);
-
-  useEffect(() => {
-    if (session?.user?.name) setUsername(session.user.name);
-    if (session?.user?.email) setEmail(session.user.email);
-  }, [session]);
 
   const handleProfileSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
