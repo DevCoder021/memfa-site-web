@@ -359,36 +359,24 @@ export default function Home() {
     };
 
     try {
-      const API_URL = 'https://admin-memfa.site.je/admin/save_message.php';
-
-      const res = await fetch(API_URL, {
+      const res = await fetch('/api/messages', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json'
         },
         body: JSON.stringify(data),
-        mode: 'cors',
       });
 
       if (!res.ok) {
-        const errorText = await res.text();
-        console.error('Erreur HTTP:', res.status, errorText);
-        throw new Error(`Erreur serveur: ${res.status}`);
+        const result = await res.json().catch(() => null);
+        throw new Error(result?.error ?? `Erreur serveur: ${res.status}`);
       }
 
-      const result = await res.json();
-
-      if (result.success) {
-        setFormStatus('success');
-        setShowAlert(true);
-        form.reset();
-        setTimeout(() => setFormStatus('idle'), 5000);
-      } else {
-        setFormStatus('error');
-        setShowAlert(true);
-        setTimeout(() => setFormStatus('idle'), 5000);
-      }
+      setFormStatus('success');
+      setShowAlert(true);
+      form.reset();
+      setTimeout(() => setFormStatus('idle'), 5000);
     } catch (error) {
       console.error('Erreur fetch:', error);
       setFormStatus('error');
