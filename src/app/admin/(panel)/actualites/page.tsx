@@ -301,7 +301,8 @@ function ActualiteModal({
           <div>
             <label className="block text-sm font-medium text-slate-600 mb-1.5">Contenu de l&apos;article</label>
             <div className="rounded-xl border border-slate-200 overflow-hidden">
-              <div className="flex items-center gap-1 px-3 py-2 bg-slate-50 border-b border-slate-200">
+              <div className="overflow-x-auto bg-slate-50 border-b border-slate-200">
+                <div className="flex min-w-max items-center gap-1 px-3 py-2">
                 <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => format("undo")} className="p-1.5 rounded hover:bg-white" title="Annuler">
                   <Undo2 className="w-3.5 h-3.5 text-slate-500" />
                 </button>
@@ -356,6 +357,7 @@ function ActualiteModal({
                 <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => format("removeFormat")} className="p-1.5 rounded hover:bg-white" title="Effacer le formatage">
                   <Eraser className="w-3.5 h-3.5 text-slate-500" />
                 </button>
+                </div>
               </div>
               <div
                 ref={editorRef}
