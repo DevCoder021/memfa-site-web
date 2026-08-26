@@ -4,7 +4,9 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import {
   Plus, Pencil, Trash2, X, Search, ImagePlus, Bold, Italic,
-  Underline as UnderlineIcon, List, ListOrdered, Send, FileText,
+  Underline as UnderlineIcon, List, ListOrdered, AlignLeft, AlignCenter,
+  AlignRight, Undo2, Redo2, Link as LinkIcon, Eraser,
+  Quote, Send, FileText,
 } from "lucide-react";
 
 type Actualite = {
@@ -206,9 +208,14 @@ function ActualiteModal({
     else alert(data.error ?? "Erreur lors de l'upload");
   };
 
-  const format = (command: string) => {
-    document.execCommand(command);
+  const format = (command: string, value?: string) => {
+    document.execCommand(command, false, value);
     editorRef.current?.focus();
+  };
+
+  const insertLink = () => {
+    const url = window.prompt("URL du lien");
+    if (url?.trim()) format("createLink", url.trim());
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -295,21 +302,59 @@ function ActualiteModal({
             <label className="block text-sm font-medium text-slate-600 mb-1.5">Contenu de l&apos;article</label>
             <div className="rounded-xl border border-slate-200 overflow-hidden">
               <div className="flex items-center gap-1 px-3 py-2 bg-slate-50 border-b border-slate-200">
-                <button type="button" onClick={() => format("bold")} className="p-1.5 rounded hover:bg-white">
+                <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => format("undo")} className="p-1.5 rounded hover:bg-white" title="Annuler">
+                  <Undo2 className="w-3.5 h-3.5 text-slate-500" />
+                </button>
+                <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => format("redo")} className="p-1.5 rounded hover:bg-white" title="Rétablir">
+                  <Redo2 className="w-3.5 h-3.5 text-slate-500" />
+                </button>
+                <span className="w-px h-4 bg-slate-200 mx-1" />
+                <select
+                  defaultValue="p"
+                  onChange={(e) => format("formatBlock", e.target.value)}
+                  className="h-7 rounded border border-slate-200 bg-white px-2 text-xs text-slate-600 outline-none"
+                  aria-label="Style du texte"
+                >
+                  <option value="p">Paragraphe</option>
+                  <option value="h1">Titre 1</option>
+                  <option value="h2">Titre 2</option>
+                  <option value="h3">Titre 3</option>
+                </select>
+                <span className="w-px h-4 bg-slate-200 mx-1" />
+                <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => format("bold")} className="p-1.5 rounded hover:bg-white" title="Gras">
                   <Bold className="w-3.5 h-3.5 text-slate-500" />
                 </button>
-                <button type="button" onClick={() => format("italic")} className="p-1.5 rounded hover:bg-white">
+                <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => format("italic")} className="p-1.5 rounded hover:bg-white" title="Italique">
                   <Italic className="w-3.5 h-3.5 text-slate-500" />
                 </button>
-                <button type="button" onClick={() => format("underline")} className="p-1.5 rounded hover:bg-white">
+                <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => format("underline")} className="p-1.5 rounded hover:bg-white" title="Souligné">
                   <UnderlineIcon className="w-3.5 h-3.5 text-slate-500" />
                 </button>
                 <span className="w-px h-4 bg-slate-200 mx-1" />
-                <button type="button" onClick={() => format("insertUnorderedList")} className="p-1.5 rounded hover:bg-white">
+                <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => format("justifyLeft")} className="p-1.5 rounded hover:bg-white" title="Aligner à gauche">
+                  <AlignLeft className="w-3.5 h-3.5 text-slate-500" />
+                </button>
+                <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => format("justifyCenter")} className="p-1.5 rounded hover:bg-white" title="Centrer">
+                  <AlignCenter className="w-3.5 h-3.5 text-slate-500" />
+                </button>
+                <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => format("justifyRight")} className="p-1.5 rounded hover:bg-white" title="Aligner à droite">
+                  <AlignRight className="w-3.5 h-3.5 text-slate-500" />
+                </button>
+                <span className="w-px h-4 bg-slate-200 mx-1" />
+                <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => format("insertUnorderedList")} className="p-1.5 rounded hover:bg-white" title="Liste à puces">
                   <List className="w-3.5 h-3.5 text-slate-500" />
                 </button>
-                <button type="button" onClick={() => format("insertOrderedList")} className="p-1.5 rounded hover:bg-white">
+                <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => format("insertOrderedList")} className="p-1.5 rounded hover:bg-white" title="Liste numérotée">
                   <ListOrdered className="w-3.5 h-3.5 text-slate-500" />
+                </button>
+                <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => format("formatBlock", "blockquote")} className="p-1.5 rounded hover:bg-white" title="Citation">
+                  <Quote className="w-3.5 h-3.5 text-slate-500" />
+                </button>
+                <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={insertLink} className="p-1.5 rounded hover:bg-white" title="Insérer un lien">
+                  <LinkIcon className="w-3.5 h-3.5 text-slate-500" />
+                </button>
+                <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => format("removeFormat")} className="p-1.5 rounded hover:bg-white" title="Effacer le formatage">
+                  <Eraser className="w-3.5 h-3.5 text-slate-500" />
                 </button>
               </div>
               <div
