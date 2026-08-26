@@ -8,5 +8,7 @@ export async function GET() {
   if (!session) return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
 
   const messages = await prisma.message.findMany({ orderBy: { createdAt: "desc" } });
-  return NextResponse.json(messages);
+  return NextResponse.json(messages, {
+    headers: { "Cache-Control": "no-store" },
+  });
 }

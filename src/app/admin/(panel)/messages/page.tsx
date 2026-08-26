@@ -24,7 +24,7 @@ export default function MessagesAdminPage() {
   const load = useCallback(async () => {
     setLoading(true);
     try {
-      const res = await fetch("/api/admin/messages");
+      const res = await fetch("/api/admin/messages", { cache: "no-store" });
       if (!res.ok) throw new Error("Impossible de charger les messages");
       setItems(await res.json());
     } finally {

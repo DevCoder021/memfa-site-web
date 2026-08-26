@@ -14,5 +14,8 @@ export async function POST(req: Request) {
     data: { nom, email, telephone: telephone || null, message },
   });
 
-  return NextResponse.json(created, { status: 201 });
+  return NextResponse.json(created, {
+    status: 201,
+    headers: { "Cache-Control": "no-store" },
+  });
 }
