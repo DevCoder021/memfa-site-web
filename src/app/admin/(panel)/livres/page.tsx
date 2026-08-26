@@ -86,7 +86,7 @@ export default function LivresAdminPage() {
               <div key={l.id} className="rounded-2xl border border-slate-100 overflow-hidden">
                 <div className="relative h-48 bg-memfa-violet/5 flex items-center justify-center">
                   {l.coverImage ? (
-                    <Image src={l.coverImage} alt={l.titre} fill className="object-cover" />
+                    <Image src={l.coverImage} alt={l.titre} fill unoptimized className="object-cover" />
                   ) : (
                     <BookOpen className="w-10 h-10 text-memfa-violet/30" />
                   )}
@@ -320,7 +320,7 @@ function LivreModal({
             </label>
             {coverImage ? (
               <div className="relative h-40 rounded-xl overflow-hidden border border-slate-200 w-32">
-                <Image src={coverImage} alt="" fill className="object-cover" />
+                <Image src={coverImage} alt="" fill unoptimized className="object-cover" />
                 <button
                   type="button"
                   onClick={() => setCoverImage("")}

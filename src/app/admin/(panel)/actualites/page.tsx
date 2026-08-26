@@ -92,7 +92,7 @@ export default function ActualitesAdminPage() {
               <div key={a.id} className="rounded-2xl border border-slate-100 overflow-hidden group">
                 <div className="relative h-40 bg-slate-100">
                   {a.imageUrl ? (
-                    <Image src={a.imageUrl} alt={a.titre} fill className="object-cover" />
+                    <Image src={a.imageUrl} alt={a.titre} fill unoptimized className="object-cover" />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center text-slate-300">
                       <FileText className="w-8 h-8" />
@@ -147,7 +147,7 @@ export default function ActualitesAdminPage() {
                 setEditing(null);
                 setShowModal(true);
               }}
-              className="rounded-2xl border-2 border-dashed border-memfa-violet/30 bg-memfa-violet/5 flex flex-col items-center justify-center text-center p-8 min-h-[280px] hover:bg-memfa-violet/10 transition-colors"
+              className="rounded-2xl border-2 border-dashed border-memfa-violet/30 bg-memfa-violet/5 flex flex-col items-center justify-center text-center p-8 min-h-70 hover:bg-memfa-violet/10 transition-colors"
             >
               <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center mb-4 shadow-sm">
                 <ImagePlus className="w-5 h-5 text-memfa-violet" />
@@ -191,6 +191,7 @@ function ActualiteModal({
   const [imageUrl, setImageUrl] = useState(actualite?.imageUrl ?? "");
   const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const editorRef = useRef<HTMLDivElement>(null);
 
   const handleImageChange = async (file: File | null) => {
@@ -212,23 +213,32 @@ function ActualiteModal({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError(null);
     setSaving(true);
 
     const contenu = editorRef.current?.innerHTML ?? "";
+    if (!contenu.replace(/<[^>]*>/g, "").trim()) {
+      setError("Le contenu de l’article est requis.");
+      setSaving(false);
+      return;
+    }
     const payload = { titre, contenu, imageUrl, dateEvenement: dateEvenement || null };
 
-    if (actualite) {
-      await fetch(`/api/admin/actualites/${actualite.id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...payload, isPublished: actualite.isPublished }),
-      });
-    } else {
-      await fetch("/api/admin/actualites", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
+    try {
+      const res = await fetch(
+        actualite ? `/api/admin/actualites/${actualite.id}` : "/api/admin/actualites",
+        {
+          method: actualite ? "PUT" : "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(actualite ? { ...payload, isPublished: actualite.isPublished } : payload),
+        }
+      );
+      const data = await res.json().catch(() => null);
+      if (!res.ok) throw new Error(data?.error ?? "Impossible d’enregistrer l’actualité.");
+    } catch (submitError) {
+      setError(submitError instanceof Error ? submitError.message : "Impossible d’enregistrer l’actualité.");
+      setSaving(false);
+      return;
     }
     setSaving(false);
     onSaved();
@@ -258,6 +268,7 @@ function ActualiteModal({
         </div>
 
         <div className="p-6 space-y-5">
+          {error && <p className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-600">{error}</p>}
           <div>
             <label className="block text-sm font-medium text-slate-600 mb-1.5">Titre</label>
             <input
@@ -306,7 +317,7 @@ function ActualiteModal({
                 contentEditable
                 suppressContentEditableWarning
                 dangerouslySetInnerHTML={{ __html: actualite?.contenu ?? "" }}
-                className="min-h-[140px] px-4 py-3 outline-none text-sm text-memfa-charcoal italic-placeholder"
+                className="min-h-35 px-4 py-3 outline-none text-sm text-memfa-charcoal italic-placeholder"
                 data-placeholder="Rédigez votre message inspirant ici..."
               />
             </div>
@@ -316,7 +327,7 @@ function ActualiteModal({
             <label className="block text-sm font-medium text-slate-600 mb-1.5">Image de couverture</label>
             {imageUrl ? (
               <div className="relative h-40 rounded-xl overflow-hidden border border-slate-200">
-                <Image src={imageUrl} alt="" fill className="object-cover" />
+                <Image src={imageUrl} alt="" fill unoptimized className="object-cover" />
                 <button
                   type="button"
                   onClick={() => setImageUrl("")}

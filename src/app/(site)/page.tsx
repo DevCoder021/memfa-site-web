@@ -21,9 +21,9 @@ gsap.registerPlugin(ScrollTrigger, ScrollToPlugin, SplitText);
 interface Actualite {
   id: string | number;
   titre: string;
-  image_url?: string;
-  date_evenement?: string;
-  date_publication?: string;
+  imageUrl?: string;
+  dateEvenement?: string;
+  datePublication?: string;
   date?: string;
 }
 
@@ -759,20 +759,20 @@ export default function Home() {
               ))
             ) : actualites.length > 0 ? (
               actualites.map((actu: Actualite, i: number) => {
-                const displayDate = actu.date_evenement || actu.date_publication || actu.date;
+                const displayDate = actu.dateEvenement || actu.datePublication || actu.date;
 
                 return (
                   <ScrollReveal key={actu.id} direction="up" delay={i * 0.1}>
                     <Link
-                      href={`/media?id=${actu.id}`}
+                      href={`/media/${actu.id}`}
                       className="group cursor-pointer block"
                       style={{ transformStyle: "preserve-3d" }}
                       ref={(el) => {if (el) newsCardsRef.current[i] = el;}}
                     >
                       <div className="aspect-[16/10] bg-gray-100 rounded-[32px] mb-6 overflow-hidden border border-gray-50 relative">
-                        {actu.image_url ? (
+                        {actu.imageUrl ? (
                           <img
-                            src={`https://admin-memfa.site.je/public/${actu.image_url}`}
+                            src={actu.imageUrl}
                             alt={actu.titre}
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                           />

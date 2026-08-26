@@ -11,9 +11,9 @@ import { getActualiteById } from "@/lib/api";
 interface Article {
   titre: string;
   contenu: string;
-  image_url?: string;
-  date_evenement?: string;
-  date_publication?: string;
+  imageUrl?: string;
+  dateEvenement?: string;
+  datePublication?: string;
   date?: string;
 }
 
@@ -80,7 +80,7 @@ export default function ArticleDetailPage() {
     );
   }
 
-  const displayDate = article.date_evenement || article.date_publication || article.date;
+  const displayDate = article.dateEvenement || article.datePublication || article.date;
 
   return (
     <div className="min-h-screen bg-white pb-24">
@@ -117,10 +117,10 @@ export default function ArticleDetailPage() {
         </div>
 
         {/* Image */}
-        {article.image_url && (
+        {article.imageUrl && (
           <div className="w-full aspect-video bg-gray-100 rounded-[2rem] overflow-hidden mb-12">
             <img 
-              src={`https://admin-memfa.site.je/public/${article.image_url}`} 
+              src={article.imageUrl} 
               alt={article.titre}
               className="w-full h-full object-cover"
             />
