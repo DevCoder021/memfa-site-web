@@ -5,7 +5,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
 import {
-  Home, Newspaper, Book, Mic, Video, MessageSquare, Quote, Settings, LogOut,
+  Home, Newspaper, Book, Mic, Video, MessageSquare, HandHeart, Settings, LogOut,
 } from "lucide-react";
 
 const navItems = [
@@ -14,7 +14,7 @@ const navItems = [
   { href: "/admin/livres", label: "Bibliothèque", icon: Book },
   { href: "/admin/audios", label: "Audios", icon: Mic },
   { href: "/admin/live", label: "Direct Live", icon: Video },
-  { href: "/admin/citations", label: "Citations bibliques", icon: Quote },
+  { href: "/admin/dons", label: "Dons", icon: HandHeart },
   { href: "/admin/messages", label: "Messages", icon: MessageSquare },
 ];
 

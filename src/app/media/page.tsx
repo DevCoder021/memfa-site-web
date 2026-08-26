@@ -3,6 +3,7 @@
 
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import gsap from "gsap";
+import Image from "next/image";
 import {
   PlayCircle,
   BookOpen,
@@ -24,9 +25,9 @@ interface Article {
   id: string | number;
   titre: string;
   contenu?: string;
-  image_url?: string;
-  date_evenement?: string;
-  date_publication?: string;
+  imageUrl?: string;
+  dateEvenement?: string;
+  datePublication?: string;
 }
 
 interface Livre {
@@ -34,9 +35,9 @@ interface Livre {
   titre: string;
   description?: string;
   auteur?: string;
-  file_path?: string;
-  cover_image?: string;
-  created_at?: string;
+  filePath?: string;
+  coverImage?: string;
+  createdAt?: string;
 }
 
 interface Audio {
@@ -44,9 +45,9 @@ interface Audio {
   titre: string;
   description?: string;
   speaker?: string;
-  file_path?: string;
+  filePath?: string;
   duration?: string;
-  created_at?: string;
+  createdAt?: string;
 }
 
 interface LiveStatus {
@@ -110,6 +111,8 @@ const handleDownload = async (fileUrl: string, fileName: string) => {
     window.open(fileUrl, '_blank');
   }
 };
+
+const externalImageLoader = ({ src }: { src: string }) => src;
 
 function MediaContent() {
   const [activeCategory, setActiveCategory] = useState("all");
@@ -177,8 +180,8 @@ function MediaContent() {
       const haystack = [
         article.titre,
         article.contenu?.replace(/<[^>]+>/g, " "),
-        article.date_evenement,
-        article.date_publication,
+        article.dateEvenement,
+        article.datePublication,
       ]
         .filter(Boolean)
         .join(" ")
@@ -196,7 +199,7 @@ function MediaContent() {
         livre.titre,
         livre.description,
         livre.auteur,
-        livre.created_at,
+        livre.createdAt,
       ]
         .filter(Boolean)
         .join(" ")
@@ -215,7 +218,7 @@ function MediaContent() {
         audio.description,
         audio.speaker,
         audio.duration,
-        audio.created_at,
+        audio.createdAt,
       ]
         .filter(Boolean)
         .join(" ")
@@ -308,13 +311,13 @@ function MediaContent() {
         {loading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[1, 2, 3].map(i => (
-              <div key={i} className="animate-pulse bg-white rounded-[2.5rem] h-[500px]"></div>
+              <div key={i} className="animate-pulse bg-white rounded-[2.5rem] h-125"></div>
             ))}
           </div>
         ) : (
           <>
             {normalizedQuery && !hasVisibleResults && (
-              <div className="mb-8 rounded-[2rem] border border-gray-200 bg-white px-6 py-5 text-sm text-gray-600 shadow-sm">
+              <div className="mb-8 rounded-4xl border border-gray-200 bg-white px-6 py-5 text-sm text-gray-600 shadow-sm">
                 Aucun résultat pour <span className="font-bold text-[#1a0f2b]">“{searchQuery}”</span>.
               </div>
             )}
@@ -334,14 +337,17 @@ function MediaContent() {
                         Actualité
                       </div>
                       <div className="h-64 bg-gray-200 relative overflow-hidden">
-                        {article.image_url ? (
-                          <img 
-                            src={`https://admin-memfa.site.je/public/${article.image_url}`} 
+                        {article.imageUrl ? (
+                          <Image
+                            src={article.imageUrl} 
                             alt={article.titre} 
+                            fill
+                            loader={externalImageLoader}
+                            sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                           />
                         ) : (
-                          <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-300 group-hover:scale-105 transition-transform duration-700 flex items-center justify-center">
+                          <div className="w-full h-full bg-linear-to-br from-gray-100 to-gray-300 group-hover:scale-105 transition-transform duration-700 flex items-center justify-center">
                             <Newspaper size={48} className="text-gray-400" />
                           </div>
                         )}
@@ -349,7 +355,7 @@ function MediaContent() {
                       <div className="p-8 flex-1 flex flex-col">
                         <div className="flex items-center gap-2 text-xs text-gray-400 mb-3 font-medium">
                           <Calendar size={14} />
-                          {formatDate(article.date_evenement || article.date_publication)}
+                          {formatDate(article.dateEvenement || article.datePublication)}
                         </div>
                         <h3 className="text-2xl font-bold text-[#1a0f2b] leading-tight mb-4 group-hover:text-[#d97706] transition-colors line-clamp-2">
                           {article.titre}
@@ -378,7 +384,7 @@ function MediaContent() {
               <>
                 {filteredLivres.length > 0 ? (
                   filteredLivres.map((livre) => {
-                    const fileUrl = `https://admin-memfa.site.je/public/${livre.file_path}`;
+                    const fileUrl = livre.filePath ?? "";
                     const fileName = livre.titre ? `${livre.titre.replace(/[^a-z0-9]/gi, '_')}.pdf` : 'document.pdf';
                     
                     return (
@@ -387,10 +393,13 @@ function MediaContent() {
                         className="media-card group bg-white rounded-[2.5rem] overflow-hidden border border-gray-100 shadow-sm hover:shadow-2xl hover:shadow-gray-200 transition-all duration-500 flex flex-col"
                       >
                         <div className="h-64 bg-gray-200 relative overflow-hidden flex items-center justify-center">
-                          {livre.cover_image ? (
-                            <img 
-                              src={`https://admin-memfa.site.je/public/${livre.cover_image}`} 
+                          {livre.coverImage ? (
+                            <Image
+                              src={livre.coverImage} 
                               alt={livre.titre}
+                              fill
+                              loader={externalImageLoader}
+                              sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
                               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                             />
                           ) : (
@@ -444,7 +453,7 @@ function MediaContent() {
                               </a>
                             </div>
                             <span className="text-xs text-gray-400">
-                              {formatDate(livre.created_at)}
+                              {formatDate(livre.createdAt)}
                             </span>
                           </div>
                         </div>
@@ -464,7 +473,7 @@ function MediaContent() {
               <>
                 {filteredAudios.length > 0 ? (
                   filteredAudios.map((audio) => {
-                    const fileUrl = `https://admin-memfa.site.je/public/${audio.file_path}`;
+                    const fileUrl = audio.filePath ?? "";
                     const fileName = audio.titre ? `${audio.titre.replace(/[^a-z0-9]/gi, '_')}.mp3` : 'audio.mp3';
                     
                     return (
@@ -473,7 +482,7 @@ function MediaContent() {
                         className="media-card group bg-white rounded-[2.5rem] overflow-hidden border border-gray-100 shadow-sm hover:shadow-2xl hover:shadow-gray-200 transition-all duration-500 flex flex-col"
                       >
                         {/* En-tête audio */}
-                        <div className="h-48 bg-gradient-to-br from-purple-500 to-memfa-violet relative flex items-center justify-center">
+                        <div className="h-48 bg-linear-to-br from-purple-500 to-memfa-violet relative flex items-center justify-center">
                           <Radio size={64} className="text-white/30" />
                           <div className="absolute top-4 right-4 z-10">
                             <span className="bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wider text-slate-700 shadow-sm">
@@ -526,7 +535,7 @@ function MediaContent() {
                               </a>
                               <span className="text-xs text-gray-400 flex items-center gap-1">
                                 <Clock size={12} />
-                                {audio.duration || formatDate(audio.created_at)}
+                                {audio.duration || formatDate(audio.createdAt)}
                               </span>
                             </div>
                           </div>
@@ -547,7 +556,7 @@ function MediaContent() {
               <>
                 {filteredLive ? (
                   filteredLive.is_active && filteredLive.video_url ? (
-                    <div className="media-card group relative bg-[#1a0f2b] rounded-[2.5rem] overflow-hidden h-full min-h-[500px] flex flex-col col-span-1 md:col-span-2 lg:col-span-2">
+                    <div className="media-card group relative bg-[#1a0f2b] rounded-[2.5rem] overflow-hidden h-full min-h-125 flex flex-col col-span-1 md:col-span-2 lg:col-span-2">
                       <div className="absolute top-6 left-6 z-20 flex items-center gap-2 bg-red-600 px-4 py-2 rounded-full animate-pulse">
                         <div className="w-2 h-2 bg-white rounded-full" />
                         <span className="text-xs font-black text-white uppercase tracking-widest">En Direct</span>
@@ -591,7 +600,7 @@ function MediaContent() {
                         )}
                       </div>
 
-                      <div className="p-8 bg-gradient-to-t from-black/80 to-transparent">
+                      <div className="p-8 bg-linear-to-t from-black/80 to-transparent">
                         <h3 className="text-3xl font-bold text-white mb-2">{filteredLive.titre}</h3>
                         <p className="text-gray-300">
                           {filteredLive.scheduled_for ? `Programmé le ${formatDate(filteredLive.scheduled_for)}` : 'En direct maintenant'}
@@ -599,8 +608,8 @@ function MediaContent() {
                       </div>
                     </div>
                   ) : (
-                    <div className="media-card group relative bg-[#1a0f2b] rounded-[2.5rem] overflow-hidden h-full min-h-[400px] flex flex-col justify-end p-8 text-white border border-white/10 shadow-xl col-span-1 md:col-span-2 lg:col-span-1">
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10" />
+                    <div className="media-card group relative bg-[#1a0f2b] rounded-[2.5rem] overflow-hidden h-full min-h-100 flex flex-col justify-end p-8 text-white border border-white/10 shadow-xl col-span-1 md:col-span-2 lg:col-span-1">
+                      <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent z-10" />
                       <div className="absolute inset-0 bg-gray-800 opacity-50" />
                       <div className="relative z-20">
                         <div className="flex items-center gap-2 mb-4">
