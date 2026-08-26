@@ -26,6 +26,8 @@ type DashboardMessage = {
 
 export default async function DashboardPage() {
   const session = await getServerSession(authOptions);
+  const weekAgo = new Date();
+  weekAgo.setDate(weekAgo.getDate() - 7);
 
   const [
     totalActualites, totalAudios, totalLivres, totalCitations, messagesNonLus,
@@ -40,10 +42,10 @@ export default async function DashboardPage() {
     prisma.live.findFirst({ where: { isActive: true } }),
     prisma.actualite.findMany({ orderBy: { datePublication: "desc" }, take: 3 }),
     prisma.message.findMany({ orderBy: { createdAt: "desc" }, take: 3 }),
-    prisma.actualite.findMany({ select: { createdAt: true }, where: { createdAt: { gte: new Date(Date.now() - 7 * 864e5) } } }),
-    prisma.audio.findMany({ select: { createdAt: true }, where: { createdAt: { gte: new Date(Date.now() - 7 * 864e5) } } }),
-    prisma.livre.findMany({ select: { createdAt: true }, where: { createdAt: { gte: new Date(Date.now() - 7 * 864e5) } } }),
-    prisma.message.findMany({ select: { createdAt: true }, where: { createdAt: { gte: new Date(Date.now() - 7 * 864e5) } } }),
+    prisma.actualite.findMany({ select: { createdAt: true }, where: { createdAt: { gte: weekAgo } } }),
+    prisma.audio.findMany({ select: { createdAt: true }, where: { createdAt: { gte: weekAgo } } }),
+    prisma.livre.findMany({ select: { createdAt: true }, where: { createdAt: { gte: weekAgo } } }),
+    prisma.message.findMany({ select: { createdAt: true }, where: { createdAt: { gte: weekAgo } } }),
   ]);
 
   // Vraies données : nombre de contenus créés (actus + audios + livres + messages) par jour, 7 derniers jours
@@ -77,9 +79,9 @@ export default async function DashboardPage() {
   ];
 
   return (
-    <div>
+    <div data-admin-dashboard>
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
+      <div data-dashboard-reveal className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold text-[var(--color-memfa-charcoal)]">Tableau de bord</h1>
         <div className="flex items-center gap-4">
           <button className="w-10 h-10 rounded-full bg-white border border-slate-100 flex items-center justify-center relative">
@@ -103,7 +105,7 @@ export default async function DashboardPage() {
       </div>
 
       {/* Actions rapides */}
-      <div className="flex flex-wrap gap-3 mb-6">
+      <div data-dashboard-reveal className="flex flex-wrap gap-3 mb-6">
         {quickActions.map(({ label, icon: Icon, href, primary }) => (
           <Link
             key={label}
@@ -121,7 +123,7 @@ export default async function DashboardPage() {
       </div>
 
       {/* Hero + Live */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
+      <div data-dashboard-reveal className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
         <Link
           href="/admin/actualites"
           className="lg:col-span-2 relative overflow-hidden rounded-3xl p-7 flex flex-col justify-between min-h-[190px] group"
@@ -179,7 +181,7 @@ export default async function DashboardPage() {
       </div>
 
       {/* Stats secondaires */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+      <div data-dashboard-reveal className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
         {stats.map(({ label, value, icon: Icon, highlight }) => (
           <div
             key={label}
@@ -201,7 +203,7 @@ export default async function DashboardPage() {
       </div>
 
       {/* Activité du site — vraies données (contenus créés / jour, 7 derniers jours) */}
-      <div className="rounded-3xl bg-white border border-slate-100 shadow-[0_8px_30px_rgba(0,0,0,0.04)] p-6 mb-4">
+      <div data-dashboard-reveal className="rounded-3xl bg-white border border-slate-100 shadow-[0_8px_30px_rgba(0,0,0,0.04)] p-6 mb-4">
         <h2 className="font-semibold text-[var(--color-memfa-charcoal)] mb-1">Activité du site</h2>
         <p className="text-xs text-slate-400 mb-6">Contenus publiés au cours des 7 derniers jours</p>
         <div className="flex items-end justify-between gap-3 h-40">
@@ -222,7 +224,7 @@ export default async function DashboardPage() {
       </div>
 
       {/* Dernières actualités / derniers messages */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      <div data-dashboard-reveal className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <div className="rounded-3xl bg-white border border-slate-100 shadow-[0_8px_30px_rgba(0,0,0,0.04)] p-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-semibold text-[var(--color-memfa-charcoal)]">Dernières actualités</h2>

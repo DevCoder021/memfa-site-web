@@ -1,9 +1,12 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
+import Lenis from "@studio-freight/lenis";
+import gsap from "gsap";
 import {
   LayoutDashboard, Newspaper, Book, Mic, Video, MessageSquare, HandHeart, Settings, LogOut,
 } from "lucide-react";
@@ -20,6 +23,41 @@ const navItems = [
 
 export default function AdminPanelLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const mainRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const lenis = new Lenis({
+      duration: 1.15,
+      smoothWheel: true,
+      wheelMultiplier: 0.85,
+    });
+    const tick = (time: number) => lenis.raf(time * 1000);
+    gsap.ticker.add(tick);
+    gsap.ticker.lagSmoothing(0);
+
+    const dashboard = mainRef.current?.querySelector("[data-admin-dashboard]");
+    const revealItems = dashboard?.querySelectorAll("[data-dashboard-reveal]");
+    if (dashboard && revealItems?.length) {
+      gsap.fromTo(
+        revealItems,
+        { opacity: 0, y: 18, scale: 0.985 },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.7,
+          stagger: 0.08,
+          ease: "power3.out",
+          clearProps: "transform,opacity",
+        }
+      );
+    }
+
+    return () => {
+      gsap.ticker.remove(tick);
+      lenis.destroy();
+    };
+  }, [pathname]);
 
   return (
     <div className="min-h-screen bg-[var(--color-memfa-violet-soft)]">
@@ -74,7 +112,7 @@ export default function AdminPanelLayout({ children }: { children: React.ReactNo
       </aside>
 
       {/* md:ml-80 = largeur sidebar (18rem) + marge gauche (1rem) + respiration */}
-      <main className="md:ml-80 p-6 md:p-10 min-h-screen">{children}</main>
+      <main ref={mainRef} className="md:ml-80 p-6 md:p-10 min-h-screen">{children}</main>
     </div>
   );
 }
