@@ -4,7 +4,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { CheckCircle2, AlertCircle } from "lucide-react";
+import { CheckCircle2, AlertCircle, ChevronDown } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
@@ -515,13 +515,23 @@ export default function Home() {
           </p>
           <div ref={heroBtnsRef} className="flex flex-col sm:flex-row gap-5 items-center justify-center pb-4 sm:pb-0">
             <Button asChild className="btn-magnetic bg-black text-white font-semibold h-14 px-10 rounded-full text-lg shadow-lg">
-              <Link href="#a-propos">Découvrir</Link>
+              <a href="#a-propos">Découvrir</a>
             </Button>
             <Button asChild className="btn-magnetic bg-white text-black border border-black font-semibold h-14 px-10 rounded-full text-lg shadow-lg">
-              <Link href="#contact">Contactez-nous</Link>
+              <a href="#contact">Contactez-nous</a>
             </Button>
           </div>
         </motion.div>
+
+        <motion.a
+          href="#a-propos"
+          aria-label="Faire défiler vers la section À propos"
+          className="absolute bottom-5 left-1/2 z-[2] -translate-x-1/2 rounded-full p-3 text-[#1a0f2b] transition-colors hover:bg-white/60 hover:text-[#d97706] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#d97706]"
+          animate={{ y: [0, 8, 0] }}
+          transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <ChevronDown size={28} strokeWidth={1.75} aria-hidden="true" />
+        </motion.a>
       </section>
 
       {/* ── À PROPOS ─────────────────────────────────────────────────────── */}
