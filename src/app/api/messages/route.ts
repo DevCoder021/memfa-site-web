@@ -1,14 +1,12 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { parseBody } from "@/lib/api-validation";
+import { MessageCreateSchema } from "@/lib/validation-schemas";
 
-// POST — reçoit les soumissions du formulaire de contact public
 export async function POST(req: Request) {
-  const body = await req.json();
-  const { nom, email, telephone, message } = body;
-
-  if (!nom || !email || !message) {
-    return NextResponse.json({ error: "Nom, email et message requis" }, { status: 400 });
-  }
+  const parsed = await parseBody(req, MessageCreateSchema);
+  if (!parsed.ok) return parsed.response;
+  const { nom, email, telephone, message } = parsed.data;
 
   const created = await prisma.message.create({
     data: { nom, email, telephone: telephone || null, message },

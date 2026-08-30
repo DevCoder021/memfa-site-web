@@ -64,7 +64,6 @@ const extractYouTubeId = (url: string): string | null => {
 };
 
 export default function Home() {
-  const [showScrollTop, setShowScrollTop] = useState(false);
   const [actualites, setActualites] = useState<Actualite[]>([]);
   const [live, setLive] = useState<LiveStatus | null>(null);
   const [loadingNews, setLoadingNews] = useState(true);
@@ -146,29 +145,35 @@ export default function Home() {
   const contentOpacity = useTransform(scrollYProgress, [0, 0.55], [1, 0.12]);
 
   // ─── SCROLL TO TOP BUTTON ────────────────────────────────────────────────
+  const showScrollTopRef = useRef(false);
+  const [, setShowScrollTopState] = useState(false);
+
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY;
       const threshold = window.innerHeight * 0.5;
-      if (scrollY > threshold && !showScrollTop) {
-        setShowScrollTop(true);
-        gsap.fromTo(scrollTopBtnRef.current,
-          { scale: 0, opacity: 0 },
-          { scale: 1, opacity: 1, duration: 0.4, ease: "back.out(1.7)" }
-        );
-      } else if (scrollY <= threshold && showScrollTop) {
-        setShowScrollTop(false);
-        gsap.to(scrollTopBtnRef.current, {
-          scale: 0,
-          opacity: 0,
-          duration: 0.3,
-          ease: "power2.in"
-        });
+      const shouldShow = scrollY > threshold;
+      if (shouldShow !== showScrollTopRef.current) {
+        showScrollTopRef.current = shouldShow;
+        setShowScrollTopState(shouldShow);
+        if (shouldShow) {
+          gsap.fromTo(scrollTopBtnRef.current,
+            { scale: 0, opacity: 0 },
+            { scale: 1, opacity: 1, duration: 0.4, ease: "back.out(1.7)" }
+          );
+        } else {
+          gsap.to(scrollTopBtnRef.current, {
+            scale: 0,
+            opacity: 0,
+            duration: 0.3,
+            ease: "power2.in"
+          });
+        }
       }
     };
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [showScrollTop]);
+  }, []);
 
   const scrollToTop = () => {
     gsap.to(window, {

@@ -150,16 +150,20 @@ function MediaContent() {
 
   useEffect(() => {
     if (!loading) {
-      const tl = gsap.timeline();
-      tl.fromTo(headerRef.current,
-        { opacity: 0, y: -30 },
-        { opacity: 1, y: 0, duration: 1, ease: "power4.out" }
-      );
-      
-      gsap.fromTo(".media-card", 
-        { opacity: 0, scale: 0.95, y: 20 }, 
-        { opacity: 1, scale: 1, y: 0, duration: 0.6, stagger: 0.1, ease: "power2.out", overwrite: true }
-      );
+      const ctx = gsap.context(() => {
+        const tl = gsap.timeline();
+        tl.fromTo(headerRef.current,
+          { opacity: 0, y: -30 },
+          { opacity: 1, y: 0, duration: 1, ease: "power4.out" }
+        );
+        
+        gsap.fromTo(".media-card", 
+          { opacity: 0, scale: 0.95, y: 20 }, 
+          { opacity: 1, scale: 1, y: 0, duration: 0.6, stagger: 0.1, ease: "power2.out", overwrite: true }
+        );
+      });
+
+      return () => ctx.revert();
     }
   }, [loading, activeCategory]);
 

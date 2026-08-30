@@ -1,27 +1,33 @@
 import { NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
+import { requireApiAdmin } from "@/lib/admin-auth";
 import { prisma } from "@/lib/prisma";
+import { parseBody } from "@/lib/api-validation";
+import { MessageUpdateSchema } from "@/lib/validation-schemas";
 
-// PUT — marquer comme lu et/ou enregistrer une réponse
 export async function PUT(
   req: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const session = await getServerSession(authOptions);
-  if (!session) return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
+  const auth = await requireApiAdmin();
+  if (!auth.ok) return auth.response;
 
   const { id } = await params;
-  const body = await req.json();
-  const { isRead, reponse } = body;
+
+  const parsed = await parseBody(req, MessageUpdateSchema);
+  if (!parsed.ok) return parsed.response;
+  const { isRead, reponse } = parsed.data;
 
   const data: Record<string, unknown> = {};
   if (typeof isRead === "boolean") data.isRead = isRead;
   if (typeof reponse === "string" && reponse.trim()) {
     data.reponse = reponse;
     data.reponduLe = new Date();
-    data.reponduPar = session.user?.name ?? "admin";
+    data.reponduPar = auth.session.user?.name ?? "admin";
     data.isRead = true;
+  }
+
+  if (Object.keys(data).length === 0) {
+    return NextResponse.json({ error: "Aucun champ valide fourni" }, { status: 400 });
   }
 
   const message = await prisma.message.update({ where: { id }, data });
@@ -32,10 +38,11 @@ export async function DELETE(
   _req: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const session = await getServerSession(authOptions);
-  if (!session) return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
+  const auth = await requireApiAdmin();
+  if (!auth.ok) return auth.response;
 
   const { id } = await params;
   await prisma.message.delete({ where: { id } });
   return NextResponse.json({ success: true });
 }
+

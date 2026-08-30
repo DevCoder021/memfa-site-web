@@ -1,26 +1,25 @@
 import { NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
+import { requireApiAdmin } from "@/lib/admin-auth";
 import { prisma } from "@/lib/prisma";
+import { parseBody } from "@/lib/api-validation";
+import { ProfileUpdateSchema } from "@/lib/validation-schemas";
 
 export async function PUT(req: Request) {
-  const session = await getServerSession(authOptions);
-  if (!session?.user?.id) return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
+  const auth = await requireApiAdmin();
+  if (!auth.ok) return auth.response;
 
-  const body = await req.json();
-  const { username, email } = body;
-
-  if (!username || !email) {
-    return NextResponse.json({ error: "Nom d'utilisateur et email requis" }, { status: 400 });
-  }
+  const parsed = await parseBody(req, ProfileUpdateSchema);
+  if (!parsed.ok) return parsed.response;
+  const { username, email } = parsed.data;
 
   try {
     const admin = await prisma.admin.update({
-      where: { id: session.user.id },
+      where: { id: auth.adminId },
       data: { username, email },
     });
     return NextResponse.json({ username: admin.username, email: admin.email });
   } catch {
-    return NextResponse.json({ error: "Ce nom d'utilisateur ou cet email est déjà utilisé" }, { status: 409 });
+    return NextResponse.json({ error: "Ce nom d'utilisateur ou cet email est deja utilise" }, { status: 409 });
   }
 }
+

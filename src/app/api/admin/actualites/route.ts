@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
+import { requireApiAdmin } from "@/lib/admin-auth";
 import { prisma } from "@/lib/prisma";
+import { parseBody } from "@/lib/api-validation";
+import { ActualiteCreateSchema } from "@/lib/validation-schemas";
 
 function slugify(titre: string) {
   return titre
@@ -12,28 +13,25 @@ function slugify(titre: string) {
     .replace(/(^-|-$)/g, "");
 }
 
-// GET /api/admin/actualites — toutes les actualités (publiées ou non), pour le back-office
 export async function GET() {
-  const session = await getServerSession(authOptions);
-  if (!session) return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
+  const auth = await requireApiAdmin();
+  if (!auth.ok) return auth.response;
 
   const actualites = await prisma.actualite.findMany({
     orderBy: { createdAt: "desc" },
   });
-  return NextResponse.json(actualites);
+  return NextResponse.json(actualites, {
+    headers: { "Cache-Control": "no-store" },
+  });
 }
 
-// POST /api/admin/actualites — créer une actualité
 export async function POST(req: Request) {
-  const session = await getServerSession(authOptions);
-  if (!session) return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
+  const auth = await requireApiAdmin();
+  if (!auth.ok) return auth.response;
 
-  const body = await req.json();
-  const { titre, contenu, imageUrl, dateEvenement } = body;
-
-  if (!titre || !contenu) {
-    return NextResponse.json({ error: "Titre et contenu requis" }, { status: 400 });
-  }
+  const parsed = await parseBody(req, ActualiteCreateSchema);
+  if (!parsed.ok) return parsed.response;
+  const { titre, contenu, imageUrl, dateEvenement, isPublished } = parsed.data;
 
   const actualite = await prisma.actualite.create({
     data: {
@@ -42,9 +40,10 @@ export async function POST(req: Request) {
       contenu,
       imageUrl: imageUrl || null,
       dateEvenement: dateEvenement ? new Date(dateEvenement) : null,
-      isPublished: true,
+      isPublished: isPublished ?? true,
     },
   });
 
   return NextResponse.json(actualite, { status: 201 });
 }
+

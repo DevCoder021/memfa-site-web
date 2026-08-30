@@ -68,7 +68,7 @@ const Cursor = () => {
       window.removeEventListener("mouseup", handleMouseUp);
       document.body.style.cursor = "auto";
     };
-  }, [mouseX, mouseY]);
+  }, []);
 
   useEffect(() => {
     document.body.style.cursor = isMobile ? "auto" : "none";
