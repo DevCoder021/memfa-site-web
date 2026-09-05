@@ -870,7 +870,7 @@ export default function Home() {
             {/* Infos de contact */}
             <ScrollReveal direction="right" delay={0.2} className="space-y-8">
               <div className="contact-animate w-full h-[300px] bg-white rounded-[40px] p-2 shadow-lg border border-gray-100 relative group overflow-hidden">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3947.218!2d-5.0558!3d7.7112!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zN8KwNDInNDAuMyJOIDXCsDAzJzIwLjkiVw!5e0!3m2!1sfr!2sci!4v1713170000000!5m2!1sfr!2sci" className="w-full h-full rounded-[35px] grayscale-[0.3] contrast-[1.1]" style={{ border: 0 }} allowFullScreen loading="lazy"></iframe>
+                <iframe title="Localisation de MEMFA à Bouaké" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3947.218!2d-5.0558!3d7.7112!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zN8KwNDInNDAuMyJOIDXCsDAzJzIwLjkiVw!5e0!3m2!1sfr!2sci!4v1713170000000!5m2!1sfr!2sci" className="w-full h-full rounded-[35px] grayscale-[0.3] contrast-[1.1]" style={{ border: 0 }} allowFullScreen loading="lazy"></iframe>
                 <div className="absolute top-6 left-6 bg-memfa-violet text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3">
                   <div className="w-8 h-8 bg-memfa-or rounded-lg flex items-center justify-center text-white">
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
