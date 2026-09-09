@@ -858,7 +858,7 @@ export default function HomeClient() {
                   ) : (
                     <>
                       <Send aria-hidden="true" className="size-5 shrink-0" strokeWidth={2.5} />
-                      Nous contacter maintenant
+                      <span className="text-center leading-tight">Nous contacter maintenant</span>
                     </>
                   )}
                 </button>
