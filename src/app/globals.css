@@ -62,6 +62,48 @@ body {
   width: 100%;
 }
 
+@keyframes not-found-twinkle {
+  0%, 100% { opacity: 0.15; transform: scale(1); }
+  50% { opacity: 0.9; transform: scale(1.55); }
+}
+
+@keyframes not-found-float {
+  0%, 100% { transform: rotate(-8deg) translateY(0); }
+  50% { transform: rotate(8deg) translateY(-7px); }
+}
+
+.not-found-star {
+  animation: not-found-twinkle 4.5s ease-in-out infinite;
+}
+
+.not-found-number {
+  -webkit-text-stroke: 1.5px rgba(248, 245, 239, 0.3);
+}
+
+.not-found-number span {
+  -webkit-text-stroke: 0;
+  background: linear-gradient(180deg, #f0cf7a, #e3b23c 72%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.not-found-compass {
+  animation: not-found-float 4s ease-in-out infinite;
+}
+
+.not-found-glow-delay {
+  animation: not-found-float 9s ease-in-out infinite reverse;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .not-found-star,
+  .not-found-compass,
+  .not-found-glow-delay {
+    animation: none;
+  }
+}
+
 html.lenis, html.lenis body {
   height: auto;
   width: 100vw;
