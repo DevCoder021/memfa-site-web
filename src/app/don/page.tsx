@@ -4,12 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { Heart, ShieldCheck, Copy, Check, ArrowLeft, Smartphone, ChevronRight, CreditCard } from "lucide-react";
 import Link from "next/link";
-import { Metadata } from 'next'
-
-export const metadata: Metadata = {
-  title: 'Faire un don',
-  description: 'Soutenez les œuvres et les projets de la Mission Évangélique Maranatha grâce à vos dons.',
-}
 
 export default function GivePage() {
   const [amount, setAmount] = useState("");

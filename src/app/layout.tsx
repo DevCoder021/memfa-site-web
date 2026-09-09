@@ -2,6 +2,8 @@
 import "./globals.css";
 import { Metadata } from "next";
 import Providers from "./providers";
+import CookieBanner from "@/components/CookieBanner";
+import GoogleAnalytics from "@/components/GoogleAnalytics";
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://memfa.vercel.app'),
@@ -51,7 +53,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="fr" suppressHydrationWarning>
       <body className="antialiased overflow-x-hidden w-full" suppressHydrationWarning>
-        <Providers>{children}</Providers>
+        <Providers>
+          {children}
+          <CookieBanner />
+          {/* Remplace G-[#IDENTIFIANT] par ton ID Google Analytics réel */}
+          <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID || "G-[#IDENTIFIANT]"} />
+        </Providers>
       </body>
     </html>
   );

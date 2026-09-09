@@ -20,12 +20,6 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { getActualites, getLivres, getAudios, getLiveStatus } from "@/lib/api";
-import { Metadata } from 'next'
-
-export const metadata: Metadata = {
-  title: 'Médias & Prédications',
-  description: 'Écoutez nos sermons, regardez nos cultes en direct et découvrez nos contenus multimédias.',
-}
 
 interface Article {
   id: string | number;
