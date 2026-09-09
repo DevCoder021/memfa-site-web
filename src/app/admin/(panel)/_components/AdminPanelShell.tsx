@@ -36,53 +36,55 @@ export default function AdminPanelShell({ children }: { children: React.ReactNod
     gsap.ticker.add(tick);
     gsap.ticker.lagSmoothing(0);
 
-    const timeline = gsap.timeline({ defaults: { ease: "power2.out" } });
-    timeline.fromTo(
-      sidebarRef.current,
-      { opacity: 0, x: -24 },
-      { opacity: 1, x: 0, duration: 1.05 }
-    );
-    const navLinks = sidebarRef.current?.querySelectorAll("nav a");
-    if (navLinks?.length) {
+    const ctx = gsap.context(() => {
+      const timeline = gsap.timeline({ defaults: { ease: "power2.out" } });
       timeline.fromTo(
-        navLinks,
-        { opacity: 0, x: -10 },
-        { opacity: 1, x: 0, duration: 0.65, stagger: 0.09 },
-        "-=0.72"
+        sidebarRef.current,
+        { opacity: 0, x: -24 },
+        { opacity: 1, x: 0, duration: 1.05 }
       );
-    }
-    timeline.fromTo(
-      mainRef.current,
-      { opacity: 0, x: 18 },
-      { opacity: 1, x: 0, duration: 0.95 },
-      "-=0.55"
-    );
+      const navLinks = sidebarRef.current?.querySelectorAll("nav a");
+      if (navLinks?.length) {
+        timeline.fromTo(
+          navLinks,
+          { opacity: 0, x: -10 },
+          { opacity: 1, x: 0, duration: 0.65, stagger: 0.09 },
+          "-=0.72"
+        );
+      }
+      timeline.fromTo(
+        mainRef.current,
+        { opacity: 0, x: 18 },
+        { opacity: 1, x: 0, duration: 0.95 },
+        "-=0.55"
+      );
 
-    const dashboard = mainRef.current?.querySelector("[data-admin-dashboard]");
-    const revealItems = dashboard?.querySelectorAll("[data-dashboard-reveal]");
-    if (dashboard && revealItems?.length) {
-      timeline.fromTo(
-        revealItems,
-        { opacity: 0, y: 18, scale: 0.985 },
-        {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 1.05,
-          stagger: 0.16,
-          ease: "power2.out",
-          clearProps: "transform,opacity",
-        },
-        "-=0.38"
-      );
-    }
+      const dashboard = mainRef.current?.querySelector("[data-admin-dashboard]");
+      const revealItems = dashboard?.querySelectorAll("[data-dashboard-reveal]");
+      if (dashboard && revealItems?.length) {
+        timeline.fromTo(
+          revealItems,
+          { opacity: 0, y: 18, scale: 0.985 },
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 1.05,
+            stagger: 0.16,
+            ease: "power2.out",
+            clearProps: "transform,opacity",
+          },
+          "-=0.38"
+        );
+      }
+    });
 
     return () => {
-      timeline.kill();
+      ctx.revert();
       gsap.ticker.remove(tick);
       lenis.destroy();
     };
-  }, [pathname]);
+  }, []);
 
   return (
     <div className="min-h-screen bg-[var(--color-memfa-violet-soft)]">
