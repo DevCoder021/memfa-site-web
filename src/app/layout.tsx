@@ -13,7 +13,21 @@ export const metadata: Metadata = {
   },
   description: "Mission Évangélique Maranatha Foi et Action. Retrouvez nos actualités, nos prédications, nos médias et participez à nos œuvres.",
   keywords: ['MEMFA', 'Église', 'Évangélique', 'Maranatha', 'Foi', 'Action', 'Côte d\'Ivoire'],
-  icons: { icon: "/assets/logo.png" },
+  icons: {
+    icon: [
+      {
+        url: "/assets/logo-icon-256.png",
+        type: "image/png",
+        sizes: "256x256",
+      },
+      {
+        url: "/assets/favicon-32x32.png",
+        type: "image/png",
+        sizes: "32x32",
+      },
+    ],
+    apple: "/assets/apple-touch-icon.png",
+  },
   robots: {
     index: true,
     follow: true,
