@@ -227,6 +227,7 @@ export default function HomeClient() {
           const num = parseInt(rawText.replace(/\D/g, ""), 10);
           if (!isNaN(num)) {
             const obj = { val: 0 };
+            valueEl.textContent = prefix + "0";
             gsap.to(obj, {
               val: num, duration: 1.8, ease: "power2.out", delay: i * 0.1 + 0.3,
               scrollTrigger: { trigger: card, start: "top 80%", once: true },
