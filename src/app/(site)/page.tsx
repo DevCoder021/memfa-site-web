@@ -3,8 +3,8 @@ import { Metadata } from 'next';
 import HomeClient from './HomeClient';
 
 export const metadata: Metadata = {
-  title: 'Accueil - Mission Évangélique Maranatha',
-  description: 'Bienvenue sur le site officiel de la Mission Évangélique Maranatha (MEMFA). Découvrez notre vision, nos cultes, nos actualités et nos programmes d\'édification.',
+  title: 'Mission Évangélique Maranatha Foi et Action',
+  description: 'Bienvenue sur le site officiel de la Mission Évangélique Maranatha Foi et Action (MEMFA). Découvrez notre vision, nos cultes, nos actualités et nos programmes d\'édification.',
 };
 
 export default function HomePage() {

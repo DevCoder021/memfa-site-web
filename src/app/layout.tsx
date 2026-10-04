@@ -8,7 +8,7 @@ import GoogleAnalytics from "@/components/GoogleAnalytics";
 export const metadata: Metadata = {
   metadataBase: new URL('https://memfa.vercel.app'),
   title: {
-    default: "MEMFA - Mission Évangélique Maranatha",
+    default: "Mission Évangélique Maranatha Foi et Action (MEMFA)",
     template: "%s | MEMFA",
   },
   description: "Mission Évangélique Maranatha Foi et Action. Retrouvez nos actualités, nos prédications, nos médias et participez à nos œuvres.",
@@ -43,21 +43,21 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'fr_FR',
     url: 'https://memfa.vercel.app',
-    title: "MEMFA - Mission Évangélique Maranatha",
+    title: "Mission Évangélique Maranatha Foi et Action (MEMFA)",
     description: "Mission Évangélique Maranatha Foi et Action",
-    siteName: 'MEMFA',
+    siteName: 'Mission Évangélique Maranatha Foi et Action (MEMFA)',
     images: [
       {
         url: '/opengraph-image.png',
         width: 1200,
         height: 630,
-        alt: 'MEMFA - Mission Évangélique Maranatha',
+        alt: 'Mission Évangélique Maranatha Foi et Action (MEMFA)',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: "MEMFA - Mission Évangélique Maranatha",
+    title: "Mission Évangélique Maranatha Foi et Action (MEMFA)",
     description: "Mission Évangélique Maranatha Foi et Action",
     images: ['/opengraph-image.png'],
   },
