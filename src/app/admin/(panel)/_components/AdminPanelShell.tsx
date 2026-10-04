@@ -140,7 +140,7 @@ export default function AdminPanelShell({ children }: { children: React.ReactNod
         </div>
       </aside>
 
-      <header className="relative z-30 -mx-4 -mt-5 mb-6 flex items-center justify-between border-b border-[var(--color-memfa-violet-line)] bg-white/95 px-4 py-3 backdrop-blur sm:-mx-6 sm:-mt-8 sm:px-6 md:hidden">
+      <header className="sticky top-2 z-30 -mx-4 mb-6 flex items-center justify-between rounded-b-xl border-b border-[var(--color-memfa-violet-line)] bg-white/95 px-4 py-3 shadow-sm backdrop-blur sm:-mx-6 sm:px-6 md:hidden">
         <Link href="/admin/dashboard" className="flex min-w-0 items-center gap-3" onClick={() => setMobileMenuOpen(false)}>
           <Image src="/assets/logo.png" alt="" width={36} height={36} className="shrink-0" />
           <span className="truncate text-sm font-bold text-[var(--color-memfa-charcoal)]">MEMFA ADMIN</span>
