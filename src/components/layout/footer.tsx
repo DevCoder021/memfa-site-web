@@ -76,6 +76,8 @@ export function Footer() {
             <a href="/politique-confidentialite" className="hover:text-[var(--color-memfa-violet)] transition-colors">Politique de Confidentialité</a>
             <span className="text-[var(--color-memfa-violet-line)]">|</span>
             <a href="/politique-cookies" className="hover:text-[var(--color-memfa-violet)] transition-colors">Politique de Cookies</a>
+            <span className="text-[var(--color-memfa-violet-line)]">|</span>
+            <a href="/conditions-utilisation" className="hover:text-memfa-violet transition-colors">Conditions d’Utilisation</a>
           </div>
         </div>
       </div>
