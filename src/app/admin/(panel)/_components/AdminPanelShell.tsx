@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -8,7 +8,7 @@ import { signOut } from "next-auth/react";
 import Lenis from "@studio-freight/lenis";
 import gsap from "gsap";
 import {
-  LayoutDashboard, Newspaper, Book, Mic, Video, MessageSquare, HandHeart, Settings, LogOut,
+  LayoutDashboard, Newspaper, Book, Mic, Video, MessageSquare, HandHeart, Settings, LogOut, Menu, X,
 } from "lucide-react";
 
 const navItems = [
@@ -23,6 +23,7 @@ const navItems = [
 
 export default function AdminPanelShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const mainRef = useRef<HTMLElement>(null);
   const sidebarRef = useRef<HTMLElement>(null);
 
@@ -87,7 +88,7 @@ export default function AdminPanelShell({ children }: { children: React.ReactNod
   }, []);
 
   return (
-    <div className="min-h-screen bg-[var(--color-memfa-violet-soft)]">
+    <div className="min-h-screen overflow-x-clip bg-[var(--color-memfa-violet-soft)]">
       <aside ref={sidebarRef} className="w-72 hidden md:flex flex-col fixed left-4 top-4 bottom-4 rounded-2xl bg-[var(--background)] border border-[var(--color-memfa-violet-line)] shadow-[0_8px_30px_rgba(58,19,97,0.08)] z-20">
         <div className="h-24 flex items-center px-6 border-b border-[var(--color-memfa-violet-line)]">
           <Image src="/assets/logo.png" alt="MEMFA" width={40} height={40} className="mr-3" />
@@ -106,6 +107,7 @@ export default function AdminPanelShell({ children }: { children: React.ReactNod
               <Link
                 key={href}
                 href={href}
+                onClick={() => setMobileMenuOpen(false)}
                 className={`flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-colors ${
                   active
                     ? "bg-[var(--color-memfa-violet)] text-white shadow-md shadow-[var(--color-memfa-violet)]/20"
@@ -122,6 +124,7 @@ export default function AdminPanelShell({ children }: { children: React.ReactNod
         <div className="p-4 border-t border-[var(--color-memfa-violet-line)] space-y-1">
           <Link
             href="/admin/parametres"
+            onClick={() => setMobileMenuOpen(false)}
             className="flex items-center px-4 py-2.5 text-sm font-medium rounded-lg text-[var(--memfa-ink-60)] hover:bg-[var(--color-memfa-violet-soft)] hover:text-[var(--color-memfa-violet)] transition-colors"
           >
             <Settings className="w-[18px] h-[18px] mr-3 text-slate-400" />
@@ -137,7 +140,71 @@ export default function AdminPanelShell({ children }: { children: React.ReactNod
         </div>
       </aside>
 
-      <main ref={mainRef} className="md:ml-80 p-6 md:p-10 min-h-screen">{children}</main>
+      <header className="relative z-30 -mx-4 -mt-5 mb-6 flex items-center justify-between border-b border-[var(--color-memfa-violet-line)] bg-white/95 px-4 py-3 backdrop-blur sm:-mx-6 sm:-mt-8 sm:px-6 md:hidden">
+        <Link href="/admin/dashboard" className="flex min-w-0 items-center gap-3" onClick={() => setMobileMenuOpen(false)}>
+          <Image src="/assets/logo.png" alt="" width={36} height={36} className="shrink-0" />
+          <span className="truncate text-sm font-bold text-[var(--color-memfa-charcoal)]">MEMFA ADMIN</span>
+        </Link>
+        <button
+          type="button"
+          aria-label={mobileMenuOpen ? "Fermer le menu d’administration" : "Ouvrir le menu d’administration"}
+          aria-expanded={mobileMenuOpen}
+          aria-controls="admin-mobile-navigation"
+          onClick={() => setMobileMenuOpen((open) => !open)}
+          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-[var(--color-memfa-violet-line)] text-[var(--color-memfa-violet-deep)] transition-colors hover:bg-[var(--color-memfa-violet-soft)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-memfa-violet)]"
+        >
+          {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+        </button>
+
+        {mobileMenuOpen && (
+          <div
+            id="admin-mobile-navigation"
+            className="absolute inset-x-0 top-full max-h-[calc(100dvh-4.5rem)] overflow-y-auto border-b border-[var(--color-memfa-violet-line)] bg-white px-4 py-3 shadow-xl"
+          >
+            <nav aria-label="Navigation d’administration" className="space-y-1">
+              {navItems.map(({ href, label, icon: Icon }) => {
+                const active = pathname === href;
+                return (
+                  <Link
+                    key={href}
+                    href={href}
+                    onClick={() => setMobileMenuOpen(false)}
+                    aria-current={active ? "page" : undefined}
+                    className={`flex min-h-11 items-center rounded-xl px-4 py-2.5 text-sm font-medium transition-colors ${
+                      active
+                        ? "bg-[var(--color-memfa-violet)] text-white"
+                        : "text-[var(--memfa-ink-60)] hover:bg-[var(--color-memfa-violet-soft)] hover:text-[var(--color-memfa-violet)]"
+                    }`}
+                  >
+                    <Icon className={`mr-3 h-[18px] w-[18px] ${active ? "text-white" : "text-slate-400"}`} aria-hidden="true" />
+                    {label}
+                  </Link>
+                );
+              })}
+            </nav>
+            <div className="mt-2 border-t border-[var(--color-memfa-violet-line)] pt-2">
+              <Link
+                href="/admin/parametres"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex min-h-11 items-center rounded-xl px-4 py-2.5 text-sm font-medium text-[var(--memfa-ink-60)] hover:bg-[var(--color-memfa-violet-soft)]"
+              >
+                <Settings className="mr-3 h-[18px] w-[18px] text-slate-400" aria-hidden="true" />
+                Paramètres
+              </Link>
+              <button
+                type="button"
+                onClick={() => void signOut({ callbackUrl: "/admin" })}
+                className="flex min-h-11 w-full items-center rounded-xl px-4 py-2.5 text-left text-sm font-medium text-red-500 hover:bg-red-50"
+              >
+                <LogOut className="mr-3 h-[18px] w-[18px]" aria-hidden="true" />
+                Déconnexion
+              </button>
+            </div>
+          </div>
+        )}
+      </header>
+
+      <main ref={mainRef} className="min-h-[calc(100dvh-5rem)] min-w-0 w-full px-4 py-5 sm:px-6 sm:py-8 md:ml-80 md:min-h-screen md:p-10">{children}</main>
     </div>
   );
 }

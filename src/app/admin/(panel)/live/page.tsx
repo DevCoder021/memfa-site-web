@@ -51,14 +51,14 @@ export default function LiveAdminPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-1">
-        <h1 className="text-2xl font-bold text-memfa-charcoal">Gestion du Direct (Live)</h1>
+      <div className="mb-1 flex flex-wrap items-start justify-between gap-3 sm:items-center">
+        <h1 className="text-xl font-bold text-memfa-charcoal sm:text-2xl">Gestion du Direct (Live)</h1>
         <button
           onClick={() => {
             setEditing(null);
             setShowModal(true);
           }}
-          className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-memfa-violet text-white text-sm font-semibold shadow-md shadow-memfa-violet/20"
+          className="flex min-h-11 shrink-0 items-center gap-2 rounded-xl bg-memfa-violet px-4 py-2.5 text-sm font-semibold text-white shadow-md shadow-memfa-violet/20"
         >
           <Plus className="w-4 h-4" /> Nouveau
         </button>
@@ -188,12 +188,12 @@ function LiveModal({
   };
 
   return (
-    <div className="fixed inset-0 bg-black/40 flex items-center justify-center p-4 z-50">
+    <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/40 p-2 sm:items-center sm:p-4">
       <form
         onSubmit={handleSubmit}
-        className="bg-white rounded-3xl w-full max-w-lg max-h-[90vh] overflow-y-auto"
+        className="max-h-[92dvh] w-full max-w-lg overflow-y-auto rounded-t-3xl bg-white sm:max-h-[90vh] sm:rounded-3xl"
       >
-        <div className="flex items-start justify-between p-6 border-b border-slate-100">
+        <div className="flex items-start justify-between gap-3 border-b border-slate-100 p-4 sm:p-6">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-memfa-violet/10 flex items-center justify-center">
               <Video className="w-4 h-4 text-memfa-violet" />
@@ -210,7 +210,7 @@ function LiveModal({
           </button>
         </div>
 
-        <div className="p-6 space-y-5">
+        <div className="space-y-5 p-4 sm:p-6">
           <div>
             <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1.5">
               Titre du direct
@@ -275,7 +275,7 @@ function LiveModal({
           </label>
         </div>
 
-        <div className="flex items-center justify-end gap-3 p-6 border-t border-slate-100">
+        <div className="flex items-center justify-end gap-3 border-t border-slate-100 p-4 sm:p-6">
           <button
             type="button"
             onClick={onClose}

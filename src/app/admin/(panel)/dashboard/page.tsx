@@ -81,8 +81,8 @@ export default async function DashboardPage() {
   return (
     <div data-admin-dashboard>
       {/* Header */}
-      <div data-dashboard-reveal className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-[var(--color-memfa-charcoal)]">Tableau de bord</h1>
+      <div data-dashboard-reveal className="mb-6 flex flex-wrap items-center justify-between gap-3">
+        <h1 className="text-xl font-bold text-[var(--color-memfa-charcoal)] sm:text-2xl">Tableau de bord</h1>
         <div className="flex items-center gap-4">
           <button className="w-10 h-10 rounded-full bg-white border border-slate-100 flex items-center justify-center relative">
             <Bell className="w-4 h-4 text-slate-500" />
