@@ -42,12 +42,6 @@ export default function NotFound() {
 					<Image src="/assets/logo-icon-256.png" alt="" width={38} height={38} className="h-9 w-9 object-contain" />
 					<span className="font-display text-xl tracking-wide">MEMFA</span>
 				</Link>
-				<Link
-					href="/don"
-					className="rounded-full bg-[#e3b23c] px-4 py-2.5 text-xs font-bold text-[#180b2b] transition-transform hover:-translate-y-0.5 sm:px-5"
-				>
-					Don en ligne
-				</Link>
 			</header>
 
 			<section className="relative z-10 flex flex-1 flex-col items-center justify-center px-6 pb-20 pt-12 text-center sm:pt-6">

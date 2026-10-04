@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 
 export const metadata: Metadata = {
-  title: "Faire un don",
+  title: "Dons en ligne bientôt disponibles | MEMFA",
   description:
-    "Soutenez les œuvres et les projets de la Mission Évangélique Maranatha grâce à vos dons.",
+    "Les dons en ligne de la Mission Évangélique Maranatha Foi et Action ne sont pas encore disponibles.",
 };
 
-export default function DonLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return children;
+export default function DonLayout() {
+  notFound();
 }
