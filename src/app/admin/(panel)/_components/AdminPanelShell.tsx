@@ -204,7 +204,7 @@ export default function AdminPanelShell({ children }: { children: React.ReactNod
         )}
       </header>
 
-      <main ref={mainRef} className="min-h-[calc(100dvh-5rem)] min-w-0 w-full px-4 py-5 sm:px-6 sm:py-8 md:ml-80 md:min-h-screen md:p-10">{children}</main>
+      <main ref={mainRef} className="min-h-[calc(100dvh-5rem)] min-w-0 w-full px-4 py-5 sm:px-6 sm:py-8 md:ml-80 md:min-h-screen md:w-auto md:p-10">{children}</main>
     </div>
   );
 }
