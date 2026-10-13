@@ -1,0 +1,413 @@
+/* Halo ambiant : l'intensité suit --t (0 -> 1) pendant les 10 dernières secondes */
+.na-halo {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 120vmin;
+  height: 120vmin;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(201, 169, 97, 0.34) 0%,
+    rgba(201, 169, 97, 0.1) 36%,
+    transparent 66%
+  );
+  opacity: calc(0.28 + var(--t, 0) * 0.72);
+  transform: translate(-50%, -50%);
+  animation: na-breathe 7s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* Vignettage : le noir se resserre quand --t augmente */
+.na-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at center,
+    transparent calc(78% - var(--t, 0) * 46%),
+    #000 calc(112% - var(--t, 0) * 40%)
+  );
+}
+
+/* Révélation */
+.na-reveal-halo {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 110vmax;
+  height: 110vmax;
+  margin: -55vmax 0 0 -55vmax;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(233, 214, 160, 0.3) 0%,
+    rgba(201, 169, 97, 0.1) 22%,
+    transparent 50%
+  );
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+.na-core {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 10px;
+  height: 10px;
+  margin: -5px 0 0 -5px;
+  border-radius: 50%;
+  background: #fff6dc;
+  box-shadow: 0 0 24px 8px rgba(255, 236, 180, 0.9),
+    0 0 90px 30px rgba(233, 200, 120, 0.5);
+  will-change: transform, opacity;
+}
+
+.na-fade {
+  animation: na-fade 1.8s ease both;
+}
+
+@keyframes na-breathe {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.07);
+  }
+}
+
+@keyframes na-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .na-halo {
+    animation: none;
+  }
+  .na-fade {
+    animation-duration: 0.01s;
+  }
+}
+
+.na-feux-stage {
+  isolation: isolate;
+  color: #f6ecd0;
+}
+
+.na-feux-aura {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    radial-gradient(ellipse at 50% 42%, rgba(166, 119, 44, 0.12), transparent 34%),
+    radial-gradient(ellipse at 50% 100%, rgba(131, 73, 46, 0.08), transparent 45%),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.08), transparent 35%, rgba(0, 0, 0, 0.24));
+  pointer-events: none;
+}
+
+.na-feux-stage canvas {
+  z-index: 2;
+}
+
+.na-feux-content {
+  z-index: 4;
+  padding-top: clamp(3.5rem, 8vh, 6rem);
+  padding-bottom: clamp(3rem, 7vh, 5rem);
+}
+
+.na-feux-eyebrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.75rem, 2vw, 1.25rem);
+  margin: 0 0 clamp(1rem, 2.5vh, 1.75rem);
+  color: #d6b873;
+  font-size: clamp(0.58rem, 1vw, 0.72rem);
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.na-feux-eyebrow-line {
+  width: clamp(1.25rem, 4vw, 3.25rem);
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(220, 187, 121, 0.8));
+}
+
+.na-feux-eyebrow-line:last-child {
+  transform: rotate(180deg);
+}
+
+.na-feux-heading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+  font-family: var(--font-manrope), sans-serif;
+  font-weight: 400;
+}
+
+.na-feux-salutation {
+  display: block;
+  color: #f4ead2;
+  font-size: clamp(1.35rem, 4.4vw, 3.6rem);
+  font-weight: 400;
+  letter-spacing: -0.055em;
+  line-height: 1.08;
+}
+
+.na-feux-year {
+  display: block;
+  margin: -0.25rem 0 0;
+  font-size: clamp(9rem, 30vw, 24rem);
+  font-weight: 400;
+  letter-spacing: -0.055em;
+  line-height: 0.82;
+  filter: drop-shadow(0 0 2.5rem rgba(220, 177, 89, 0.16));
+}
+
+.na-feux-ornament {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.85rem;
+  width: clamp(8rem, 24vw, 15rem);
+  margin: clamp(1.3rem, 3vh, 2rem) 0 clamp(1.1rem, 2.5vh, 1.8rem);
+  transform-origin: center;
+}
+
+.na-feux-ornament span {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #c9974f);
+}
+
+.na-feux-ornament span:last-child {
+  transform: rotate(180deg);
+}
+
+.na-feux-ornament svg {
+  width: 0.8rem;
+  height: 0.8rem;
+  stroke: #e5c47c;
+  stroke-width: 1.15;
+}
+
+.na-feux-institution {
+  display: flex;
+  flex-direction: column;
+  gap: 0.32rem;
+  margin: 0;
+  color: rgba(236, 221, 190, 0.76);
+  font-size: clamp(0.76rem, 1.75vw, 1.05rem);
+  font-weight: 400;
+  letter-spacing: 0.11em;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+.na-feux-institution strong {
+  color: #e5c47c;
+  font-size: 1.12em;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+}
+
+.na-feux-message {
+  max-width: 34rem;
+  margin: clamp(1.2rem, 3vh, 2rem) 0 0;
+  color: #cdbf9f;
+  font-size: clamp(0.9rem, 1.7vw, 1.1rem);
+  font-weight: 400;
+  letter-spacing: 0.015em;
+  line-height: 1.8;
+}
+
+@media (max-height: 650px) and (min-width: 600px) {
+  .na-feux-content {
+    padding-top: 3rem;
+    padding-bottom: 2rem;
+    transform: scale(0.82);
+  }
+}
+
+@media (max-width: 480px) {
+  .na-feux-eyebrow {
+    letter-spacing: 0.2em;
+  }
+
+  .na-feux-salutation {
+    max-width: 12ch;
+    font-size: clamp(1.5rem, 7vw, 2rem);
+  }
+
+  .na-feux-year {
+    font-size: clamp(8.5rem, 43vw, 12rem);
+  }
+
+  .na-feux-institution {
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+  }
+
+  .na-feux-institution strong {
+    letter-spacing: 0.11em;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .na-feux-aura {
+    transition: none;
+  }
+}
+
+.na-feux-grid {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(225, 194, 133, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(225, 194, 133, 0.025) 1px, transparent 1px);
+  background-size: clamp(3rem, 8vw, 7rem) clamp(3rem, 8vw, 7rem);
+  mask-image: radial-gradient(ellipse at center, #000 12%, transparent 78%);
+  pointer-events: none;
+}
+
+.na-feux-sweep {
+  position: absolute;
+  z-index: 5;
+  top: 50%;
+  right: 0;
+  left: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 239, 199, 0.9), transparent);
+  box-shadow: 0 0 1.25rem rgba(225, 194, 133, 0.3);
+  pointer-events: none;
+}
+
+.na-feux-word-mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+
+.na-feux-word-mask > [data-word] {
+  display: inline-block;
+  transform-origin: center bottom;
+}
+
+.na-feux-content {
+  gap: 0;
+  padding: clamp(5.5rem, 12vh, 8rem) 1.5rem clamp(6.5rem, 13vh, 9rem);
+}
+
+.na-feux-eyebrow {
+  margin-bottom: clamp(0.5rem, 1.5vh, 1rem);
+  font-size: clamp(0.48rem, 0.8vw, 0.62rem);
+  letter-spacing: 0.2em;
+}
+
+.na-feux-logo {
+  display: block;
+  width: clamp(14rem, 36vw, 28rem);
+  max-height: min(30vh, 20rem);
+  height: auto;
+  margin: 0 auto clamp(0.5rem, 1.5vh, 1rem);
+  object-fit: contain;
+  filter: drop-shadow(0 0 1.5rem rgba(220, 177, 89, 0.12));
+}
+
+.na-feux-logo-source {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.na-feux-heading {
+  gap: clamp(0.15rem, 0.8vh, 0.5rem);
+}
+
+.na-feux-salutation {
+  max-width: none;
+  font-size: clamp(1.3rem, 3.2vw, 2.7rem);
+  letter-spacing: -0.045em;
+  white-space: nowrap;
+}
+
+.na-feux-year-mask {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  padding: 0 0.14em 0.12em;
+}
+
+.na-feux-year {
+  position: relative;
+  z-index: 1;
+  display: block;
+  margin: 0;
+  font-size: clamp(5.5rem, 14vw, 10rem);
+  letter-spacing: -0.04em;
+  line-height: 0.96;
+  filter: drop-shadow(0 0 1rem rgba(220, 177, 89, 0.2));
+}
+
+.na-feux-ground {
+  position: absolute;
+  z-index: 2;
+  right: 4%;
+  bottom: 0.12em;
+  left: 4%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #fff0c9 20%, #c9974f 80%, transparent);
+  box-shadow: 0 0 0.8rem rgba(229, 196, 124, 0.8);
+  pointer-events: none;
+}
+
+.na-feux-message {
+  max-width: 34rem;
+  margin: clamp(0.5rem, 1.5vh, 1rem) 0 0;
+  font-size: clamp(0.82rem, 1.4vw, 1rem);
+}
+
+@media (max-width: 600px) {
+  .na-feux-content {
+    padding-right: 1.25rem;
+    padding-left: 1.25rem;
+  }
+
+  .na-feux-eyebrow {
+    max-width: 30ch;
+    font-size: 0.48rem;
+    letter-spacing: 0.14em;
+  }
+
+  .na-feux-eyebrow-line {
+    flex: 0 0 1rem;
+    width: 1rem;
+  }
+
+  .na-feux-logo {
+    width: clamp(13rem, 62vw, 18rem);
+    max-height: 25vh;
+  }
+
+  .na-feux-salutation {
+    font-size: clamp(1.3rem, 6.2vw, 2rem);
+  }
+
+  .na-feux-year {
+    font-size: clamp(5.3rem, 24vw, 7.5rem);
+  }
+
+  .na-feux-message {
+    max-width: 32ch;
+    font-size: clamp(0.78rem, 3.8vw, 0.95rem);
+  }
+}
